@@ -3,6 +3,7 @@ package com.example.register;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             buffer.append("First name: " + res.getString(1) + "\n") ;
             buffer.append("Last name: " + res.getString(2) + "\n") ;
             buffer.append("Email: " + res.getString(3) + "\n") ;
+            buffer.append("Password: " + res.getString(4) + "\n") ;
         }
         ShowMessage("Data",buffer.toString());
     }
@@ -64,5 +66,10 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title) ;
         builder.setMessage(message) ;
         builder.show() ;
+    }
+
+    public void login(View view) {
+        Intent switchActivity = new Intent(this, Login.class);
+        startActivity(switchActivity);
     }
 }
