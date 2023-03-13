@@ -30,6 +30,9 @@ public class Login extends AppCompatActivity {
             if (res.getString(3).toString().equals(emailEdit.getText().toString())) {
                 if (res.getString(4).toString().equals(passwordEdit.getText().toString())) {
                     Intent switchActivity = new Intent(this, Hello.class);
+                    switchActivity.putExtra("firstName",res.getString(1));
+                    switchActivity.putExtra("lastName",res.getString(2)) ;
+                    switchActivity.putExtra("email",res.getString(3)) ;
                     startActivity(switchActivity);
                 }
             }
