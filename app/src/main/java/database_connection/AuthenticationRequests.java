@@ -1,54 +1,94 @@
 package database_connection;
 
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoException;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
 
-import org.bson.Document;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import others.Manager;
 
 public class AuthenticationRequests {
 
-    public static String registerUser(String email, String username, String password) {
-        MongoDatabase database = Manager.getDbConnection().getDatabase();
-        MongoCollection<Document> usersCollection = database.getCollection("Users");
+    public String registerUser(String email, String username, String password) {
 
-        Document newDocument = new Document();
-        newDocument.append("email", email);
-        newDocument.append("username", username);
-        newDocument.append("password", password);
-
-        if(checkUserExists(email, username, password))
+        if(checkUserExists(email, username, password).equals("User already exists"))
             return "User already exists";
+        else if(checkUserExists(email, username, password).equals("Couldn't check if user is already in database"))
+            return "Couldn't check if user is already in database";
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("email", email);
+        user.put("username", username);
+        user.put("password", password);
+
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+
+        if(usersCollection.add(user).isSuccessful())
+            return "User added successfully";
+
+        return  "Error adding user";
+    }
+
+    public String checkUserExists(String email, String username, String password) {
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+
+        Query queryByUsernameAndPassword = usersCollection.whereEqualTo("username", username).whereEqualTo("password", password);
+        Query queryByEmailAndPassword = usersCollection.whereEqualTo("email", email).whereEqualTo("password", password);
+
+        final boolean[] userExists = {false};
+        final CountDownLatch latch = new CountDownLatch(2);
+
+        queryByEmailAndPassword.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot queryEmailSnapshot = task.getResult();
+                    if (!queryEmailSnapshot.isEmpty()) {
+                        userExists[0] = true;
+                    }
+                }
+                latch.countDown();
+            }
+        });
+
+        queryByUsernameAndPassword.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot queryUsernameSnapshot = task.getResult();
+                    if (!queryUsernameSnapshot.isEmpty()) {
+                        userExists[0] = true;
+                    }
+                }
+                latch.countDown();
+            }
+        });
 
         try {
-            usersCollection.insertOne(newDocument);
-            return "User added successfully";
-        } catch (MongoException e) {
-            return "Error creating user";
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return "Error checking if user exists";
+        }
+
+        if (userExists[0]) {
+            return "User already exists";
+        } else {
+            return "User does not exist";
         }
     }
 
-    public static boolean checkUserExists(String email, String username, String password) {
-        MongoDatabase database = Manager.getDbConnection().getDatabase();
-        MongoCollection<Document> usersCollection = database.getCollection("Users");
-
-        BasicDBObject searchCriteria = new BasicDBObject();
-        searchCriteria.append("email", email);
-        searchCriteria.append("password", password);
-        Document emailSearchDocument = usersCollection.find(searchCriteria).first();
-
-        searchCriteria.remove("email");
-        searchCriteria.append("username", username);
-        Document usernameSearchDocument = usersCollection.find(searchCriteria).first();
-
-        return emailSearchDocument != null || usernameSearchDocument != null;
-    }
 }

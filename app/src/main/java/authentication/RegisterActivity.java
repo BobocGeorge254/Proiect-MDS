@@ -13,6 +13,7 @@ import com.example.register.R;
 
 import database_connection.AuthenticationRequests;
 import interfaces.ActivityBasics;
+import others.Manager;
 
 public class RegisterActivity extends AppCompatActivity implements ActivityBasics {
 
@@ -65,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements ActivityBasic
                 String username = act_register_username_ET.getText().toString().trim();
                 String password = act_register_password_ET.getText().toString().trim();
 
-                System.out.println(AuthenticationRequests.registerUser(email, username, password));
+                System.out.println(Manager.authenticationRequests.registerUser(email, username, password));
             }
         });
     }

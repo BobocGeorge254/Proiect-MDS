@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.example.register.R;
 
 import interfaces.ActivityBasics;
+import others.Manager;
 
 public class LoginActivity extends AppCompatActivity implements ActivityBasics {
 
@@ -39,6 +40,20 @@ public class LoginActivity extends AppCompatActivity implements ActivityBasics {
     @Override
     public void setListeners() {
         act_login_toRegister_button_onClick();
+        act_login_signIn_button_onClick();
+    }
+
+    private void act_login_signIn_button_onClick()
+    {
+        act_login_signIn_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email_or_email = act_login_username_email_ET.getText().toString().trim();
+                String password = act_login_password_ET.getText().toString().trim();
+
+                System.out.println(Manager.authenticationRequests.checkUserExists(email_or_email, email_or_email, password));
+            }
+        });
     }
 
     private void act_login_toRegister_button_onClick()
