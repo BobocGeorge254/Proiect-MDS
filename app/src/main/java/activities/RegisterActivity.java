@@ -1,4 +1,4 @@
-package authentication;
+package activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.register.R;
 
-import database_connection.AuthenticationRequests;
 import interfaces.ActivityBasics;
 import others.Manager;
 

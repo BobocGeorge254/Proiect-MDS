@@ -1,8 +1,7 @@
-package authentication;
+package activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +10,8 @@ import android.widget.EditText;
 
 import com.example.register.R;
 
+import database_connection.AuthenticationRequests;
 import interfaces.ActivityBasics;
-import others.Manager;
 
 public class LoginActivity extends AppCompatActivity implements ActivityBasics {
 
@@ -51,7 +50,11 @@ public class LoginActivity extends AppCompatActivity implements ActivityBasics {
                 String email_or_email = act_login_username_email_ET.getText().toString().trim();
                 String password = act_login_password_ET.getText().toString().trim();
 
-                System.out.println(Manager.authenticationRequests.checkUserExists(email_or_email, email_or_email, password));
+                String status = AuthenticationRequests.checkUserExists(email_or_email, email_or_email, password);
+                System.out.println(status);
+
+                if(status.equals("User login successfully"))
+                    startActivity(new Intent(LoginActivity.this, TeamsListingActivity.class));
             }
         });
     }

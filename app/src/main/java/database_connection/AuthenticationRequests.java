@@ -22,73 +22,52 @@ import others.Manager;
 
 public class AuthenticationRequests {
 
-    public String registerUser(String email, String username, String password) {
+      public String registerUser(String email, String username, String password) {
+          CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+          Query queryCheckIfEmailExists = usersCollection.whereEqualTo("email", email);
 
-        if(checkUserExists(email, username, password).equals("User already exists"))
-            return "User already exists";
-        else if(checkUserExists(email, username, password).equals("Couldn't check if user is already in database"))
-            return "Couldn't check if user is already in database";
+          Task<QuerySnapshot> queryEmailSnapshot = queryCheckIfEmailExists.get();
+
+          while (!queryEmailSnapshot.isComplete()){}  //blocks until query is executed
+
+          if (!queryEmailSnapshot.getResult().isEmpty())
+              return "Email is already used";
 
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
         user.put("username", username);
         user.put("password", password);
 
-        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+        Task<DocumentReference> addUserTask = usersCollection.add(user);
+        while (!addUserTask.isComplete()) {}
 
-        if(usersCollection.add(user).isSuccessful())
+        if(addUserTask.isSuccessful())
             return "User added successfully";
 
         return  "Error adding user";
     }
 
-    public String checkUserExists(String email, String username, String password) {
+    public static String checkUserExists(String email, String username, String password) {
         CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
 
-        Query queryByUsernameAndPassword = usersCollection.whereEqualTo("username", username).whereEqualTo("password", password);
         Query queryByEmailAndPassword = usersCollection.whereEqualTo("email", email).whereEqualTo("password", password);
+        Task<QuerySnapshot> queryEmailTask = queryByEmailAndPassword.get();
 
-        final boolean[] userExists = {false};
-        final CountDownLatch latch = new CountDownLatch(2);
+        while (!queryEmailTask.isComplete()){}   //blocks until query is executed
 
-        queryByEmailAndPassword.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot queryEmailSnapshot = task.getResult();
-                    if (!queryEmailSnapshot.isEmpty()) {
-                        userExists[0] = true;
-                    }
-                }
-                latch.countDown();
-            }
-        });
-
-        queryByUsernameAndPassword.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot queryUsernameSnapshot = task.getResult();
-                    if (!queryUsernameSnapshot.isEmpty()) {
-                        userExists[0] = true;
-                    }
-                }
-                latch.countDown();
-            }
-        });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return "Error checking if user exists";
+        if (!queryEmailTask.getResult().isEmpty()) {
+            return "User login successfully";
         }
 
-        if (userExists[0]) {
-            return "User already exists";
-        } else {
-            return "User does not exist";
+        Query queryByUsernameAndPassword = usersCollection.whereEqualTo("username", username).whereEqualTo("password", password);
+        Task<QuerySnapshot> queryUsernameTask = queryByUsernameAndPassword.get();
+
+        while (!queryUsernameTask.isComplete()){}
+
+        if (!queryUsernameTask.getResult().isEmpty()) {
+            return "User login successfully";
         }
+
+        return "User does not exist yet";
     }
-
 }
