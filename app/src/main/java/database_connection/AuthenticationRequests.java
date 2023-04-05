@@ -22,16 +22,17 @@ import others.Manager;
 
 public class AuthenticationRequests {
 
-      public String registerUser(String email, String username, String password) {
-          CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
-          Query queryCheckIfEmailExists = usersCollection.whereEqualTo("email", email);
+    public static String registerUser(String email, String username, String password) {
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+        Query queryCheckIfEmailExists = usersCollection.whereEqualTo("email", email);
 
-          Task<QuerySnapshot> queryEmailSnapshot = queryCheckIfEmailExists.get();
+        Task<QuerySnapshot> queryEmailSnapshot = queryCheckIfEmailExists.get();
 
-          while (!queryEmailSnapshot.isComplete()){}  //blocks until query is executed
+        while (!queryEmailSnapshot.isComplete()) {
+        }  //blocks until query is executed
 
-          if (!queryEmailSnapshot.getResult().isEmpty())
-              return "Email is already used";
+        if (!queryEmailSnapshot.getResult().isEmpty())
+            return "Email is already used";
 
         Map<String, Object> user = new HashMap<>();
         user.put("email", email);
@@ -39,34 +40,35 @@ public class AuthenticationRequests {
         user.put("password", password);
 
         Task<DocumentReference> addUserTask = usersCollection.add(user);
-        while (!addUserTask.isComplete()) {}
+        while (!addUserTask.isComplete()) {
+        }
 
-        if(addUserTask.isSuccessful())
+        if (addUserTask.isSuccessful())
             return "User added successfully";
 
-        return  "Error adding user";
+        return "Error adding user";
     }
 
-    public static String checkUserExists(String email, String username, String password) {
+    public static String checkUserExists(String email, String username, String password) {  //also used for log in
         CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
 
         Query queryByEmailAndPassword = usersCollection.whereEqualTo("email", email).whereEqualTo("password", password);
         Task<QuerySnapshot> queryEmailTask = queryByEmailAndPassword.get();
 
-        while (!queryEmailTask.isComplete()){}   //blocks until query is executed
+        while (!queryEmailTask.isComplete()) {
+        }   //blocks until query is executed
 
-        if (!queryEmailTask.getResult().isEmpty()) {
-            return "User login successfully";
-        }
+        if (!queryEmailTask.getResult().isEmpty())
+            return queryEmailTask.getResult().getDocuments().get(0).getId();  //if login success return the id of the client
 
         Query queryByUsernameAndPassword = usersCollection.whereEqualTo("username", username).whereEqualTo("password", password);
         Task<QuerySnapshot> queryUsernameTask = queryByUsernameAndPassword.get();
 
-        while (!queryUsernameTask.isComplete()){}
-
-        if (!queryUsernameTask.getResult().isEmpty()) {
-            return "User login successfully";
+        while (!queryUsernameTask.isComplete()) {
         }
+
+        if (!queryUsernameTask.getResult().isEmpty())
+            return queryUsernameTask.getResult().getDocuments().get(0).getId();  //if login success return the id of the client
 
         return "User does not exist yet";
     }

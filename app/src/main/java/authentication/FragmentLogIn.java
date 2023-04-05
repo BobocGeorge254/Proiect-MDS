@@ -1,5 +1,6 @@
 package authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,8 @@ import com.example.register.R;
 
 import database_connection.AuthenticationRequests;
 import interfaces.ActivityBasics;
+import others.PreferencesManager;
+import teams.TeamsActivity;
 
 public class FragmentLogIn extends Fragment implements ActivityBasics {
 
@@ -59,8 +62,14 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
                 String email_or_email = act_authentication_fr_authentication_username_email_ET.getText().toString().trim();
                 String password = act_authentication_fr_authentication_password_ET.getText().toString().trim();
 
-                String status = AuthenticationRequests.checkUserExists(email_or_email, email_or_email, password);
-                System.out.println(status);
+                String response = AuthenticationRequests.checkUserExists(email_or_email, email_or_email, password);
+
+                if(!response.equals("User does not exist yet")) {
+                    PreferencesManager.saveUserId(getContext(), response);
+                    startActivity(new Intent(getContext(), TeamsActivity.class));
+                }
+
+                System.out.println(response);
             }
         });
     }

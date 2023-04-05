@@ -63,7 +63,7 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
                 String username = act_authentication_fr_register_username_ET.getText().toString().trim();
                 String password = act_authentication_fr_register_password_ET.getText().toString().trim();
 
-                System.out.println(Manager.authenticationRequests.registerUser(email, username, password));
+                System.out.println(AuthenticationRequests.registerUser(email, username, password));
             }
         });
     }
