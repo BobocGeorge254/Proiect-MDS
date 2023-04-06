@@ -36,6 +36,15 @@ public class TeamsRequests {
     public static String addUserToTeam(String userId, String teamId) {
         CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
 
+        Query queryCheckJointTeam = users_teamsCollection.whereEqualTo("user_id", userId).whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> queryCheckJoinTask = queryCheckJointTeam.get();
+
+        while (!queryCheckJoinTask.isComplete()) {
+        }   //blocks until query is executed
+
+        if(!queryCheckJoinTask.getResult().isEmpty())
+            return "User already in team";
+
         Map<String, Object> user = new HashMap<>();
         user.put("user_id", userId);
         user.put("team_id", teamId);
@@ -44,7 +53,7 @@ public class TeamsRequests {
         while (!addUsers_TeamsTask.isComplete()) {}
 
         if (addUsers_TeamsTask.isSuccessful())
-            return addUsers_TeamsTask.getResult().getId();
+            return teamId;
 
         return "Error adding user to team";
     }

@@ -30,10 +30,15 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private RecyclerView act_teams_fr_listing_recycleview;
     private LinearLayout act_teams_fr_listing_create_team_window;
     private Button act_teams_fr_listing_create_team_button;
+    private Button act_teams_fr_listing_join_team_button;
     private EditText act_teams_fr_listing_create_team_card_name;
     private EditText act_teams_fr_listing_create_team_card_description;
     private Button act_teams_fr_listing_create_team_card_create_button;
     private Button act_teams_fr_listing_create_team_card_cancel_button;
+    private LinearLayout act_teams_fr_listing_join_team_window;
+    private Button act_teams_fr_listing_join_team_card_join_button;
+    private Button act_teams_fr_listing_join_team_card_cancel_button;
+    private EditText act_teams_fr_listing_join_team_card_ET;
     private View view;
     private AdapterTeams adapterTeams;
     private ArrayList<DataTeamCard> dataTeamCardList;
@@ -47,6 +52,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         setListeners();
 
         act_teams_fr_listing_create_team_window.setVisibility(View.INVISIBLE);
+        act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
 
         dataTeamCardList = TeamsRequests.getTeams(PreferencesManager.getUserId(getContext()));
         setTeamsAdapter();
@@ -59,17 +65,25 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_recycleview = view.findViewById(R.id.act_teams_fr_listing_recycleview);
         act_teams_fr_listing_create_team_window = view.findViewById(R.id.act_teams_fr_listing_create_team_window);
         act_teams_fr_listing_create_team_button = view.findViewById(R.id.act_teams_fr_listing_create_team_button);
+        act_teams_fr_listing_join_team_button = view.findViewById(R.id.act_teams_fr_listing_join_team_button);
         act_teams_fr_listing_create_team_card_name = view.findViewById(R.id.act_teams_fr_listing_create_team_card_name);
         act_teams_fr_listing_create_team_card_description = view.findViewById(R.id.act_teams_fr_listing_create_team_card_description);
         act_teams_fr_listing_create_team_card_create_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_create_button);
         act_teams_fr_listing_create_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_cancel_button);
+        act_teams_fr_listing_join_team_window = view.findViewById(R.id.act_teams_fr_listing_join_team_window);
+        act_teams_fr_listing_join_team_card_join_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_join_button);
+        act_teams_fr_listing_join_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_cancel_button);
+        act_teams_fr_listing_join_team_card_ET = view.findViewById(R.id.act_teams_fr_listing_join_team_card_ET);
     }
 
     @Override
     public void setListeners() {
         act_teams_fr_listing_create_team_button_onClick();
+        act_teams_fr_listing_join_team_button_onClick();
         act_teams_fr_listing_create_team_card_cancel_button_onClick();
         act_teams_fr_listing_create_team_card_create_button_onClick();
+        act_teams_fr_listing_join_team_card_join_button_onClick();
+        act_teams_fr_listing_join_team_card_cancel_button_onClick();
     }
 
     private void act_teams_fr_listing_create_team_button_onClick()
@@ -78,6 +92,16 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 act_teams_fr_listing_create_team_window.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void act_teams_fr_listing_join_team_button_onClick()
+    {
+        act_teams_fr_listing_join_team_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_listing_join_team_window.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -109,6 +133,34 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                     dataTeamCardList.add(new DataTeamCard(response, teamName, teamDescription));
                     adapterTeams.notifyItemInserted(dataTeamCardList.size() - 1);
                 }
+            }
+        });
+    }
+
+    private void act_teams_fr_listing_join_team_card_join_button_onClick()
+    {
+        act_teams_fr_listing_join_team_card_join_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String teamCode = act_teams_fr_listing_join_team_card_ET.getText().toString().trim();
+                String response = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), teamCode);
+
+                System.out.println(response);
+                if(response.equals(teamCode)) {
+                    dataTeamCardList.clear();
+                    dataTeamCardList.addAll(TeamsRequests.getTeams(PreferencesManager.getUserId(getContext())));
+                    adapterTeams.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void act_teams_fr_listing_join_team_card_cancel_button_onClick()
+    {
+        act_teams_fr_listing_join_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
             }
         });
     }
