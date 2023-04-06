@@ -3,7 +3,11 @@ package teams;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,9 @@ import android.widget.LinearLayout;
 
 import com.example.register.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import database_connection.TeamsRequests;
 import interfaces.ActivityBasics;
 import others.PreferencesManager;
@@ -20,13 +27,16 @@ import others.PreferencesManager;
 
 public class FragmentTeamsListing extends Fragment implements ActivityBasics {
 
-    LinearLayout act_teams_fr_listing_create_team_window;
-    Button act_teams_fr_listing_create_team_button;
-    EditText act_teams_fr_listing_create_team_card_name;
-    EditText act_teams_fr_listing_create_team_card_description;
-    Button act_teams_fr_listing_create_team_card_create_button;
-    Button act_teams_fr_listing_create_team_card_cancel_button;
-    View view;
+    private RecyclerView act_teams_fr_listing_recycleview;
+    private LinearLayout act_teams_fr_listing_create_team_window;
+    private Button act_teams_fr_listing_create_team_button;
+    private EditText act_teams_fr_listing_create_team_card_name;
+    private EditText act_teams_fr_listing_create_team_card_description;
+    private Button act_teams_fr_listing_create_team_card_create_button;
+    private Button act_teams_fr_listing_create_team_card_cancel_button;
+    private View view;
+    private AdapterTeams adapterTeams;
+    private ArrayList<DataTeamCard> dataTeamCardList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,15 +48,15 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
 
         act_teams_fr_listing_create_team_window.setVisibility(View.INVISIBLE);
 
-        System.out.println("Teams list: ");
-        for(String team : TeamsRequests.getTeamsIds(PreferencesManager.getUserId(getContext())))
-            System.out.println(team);
+        dataTeamCardList = TeamsRequests.getTeams(PreferencesManager.getUserId(getContext()));
+        setTeamsAdapter();
 
         return view;
     }
 
     @Override
     public void getActivityElements() {
+        act_teams_fr_listing_recycleview = view.findViewById(R.id.act_teams_fr_listing_recycleview);
         act_teams_fr_listing_create_team_window = view.findViewById(R.id.act_teams_fr_listing_create_team_window);
         act_teams_fr_listing_create_team_button = view.findViewById(R.id.act_teams_fr_listing_create_team_button);
         act_teams_fr_listing_create_team_card_name = view.findViewById(R.id.act_teams_fr_listing_create_team_card_name);
@@ -96,8 +106,19 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 if(!response.equals("Error adding team")) {
                     String response2 = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), response);
                     System.out.println(response2);
+                    dataTeamCardList.add(new DataTeamCard(response, teamName, teamDescription));
+                    adapterTeams.notifyItemInserted(dataTeamCardList.size() - 1);
                 }
             }
         });
+    }
+
+    private void setTeamsAdapter()
+    {
+        adapterTeams = new AdapterTeams(dataTeamCardList, getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        act_teams_fr_listing_recycleview.setLayoutManager(layoutManager);
+        act_teams_fr_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
+        act_teams_fr_listing_recycleview.setAdapter(adapterTeams);
     }
 }

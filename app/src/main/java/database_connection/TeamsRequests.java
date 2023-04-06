@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import others.Manager;
+import teams.DataTeamCard;
 
 public class TeamsRequests {
 
@@ -48,7 +49,7 @@ public class TeamsRequests {
         return "Error adding user to team";
     }
 
-    public static List<String> getTeamsIds(String userId) {  //return the user is part of
+    public static ArrayList<DataTeamCard> getTeams(String userId) {
         CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
         CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
 
@@ -58,11 +59,19 @@ public class TeamsRequests {
         while (!queryGetTeamsTask.isComplete()) {
         }   //blocks until query is executed
 
-        List<String> teamsList = new ArrayList<>();
+        ArrayList<DataTeamCard> teamsList = new ArrayList<>();
 
         if (!queryGetTeamsTask.getResult().isEmpty())
-            for(DocumentSnapshot documentSnapshot : queryGetTeamsTask.getResult().getDocuments())
-                teamsList.add(documentSnapshot.getString("team_id"));
+            for(DocumentSnapshot documentSnapshot : queryGetTeamsTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getString("team_id");
+                Task<DocumentSnapshot> getTeamDetailsTask = teamsCollection.document(id).get();
+
+                while (!getTeamDetailsTask.isComplete()) {}  //blocks until query is executed
+
+                String name = getTeamDetailsTask.getResult().get("name").toString();
+                String description = getTeamDetailsTask.getResult().get("description").toString();
+                teamsList.add(new DataTeamCard(id, name, description));
+            }
 
         return teamsList;
     }
