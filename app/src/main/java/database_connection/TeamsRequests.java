@@ -17,26 +17,42 @@ import teams.DataTeamCard;
 
 public class TeamsRequests {
 
-    public static String createTeam(String teamName, String teamDescription) {
+    public static String createTeam(String teamName, String teamDescription, String userId) {
         CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", teamName);
-        user.put("description", teamDescription);
+        Map<String, Object> team = new HashMap<>();
+        team.put("name", teamName);
+        team.put("description", teamDescription);
 
-        Task<DocumentReference> addTeamTask = teamsCollection.add(user);
+        Task<DocumentReference> addTeamTask = teamsCollection.add(team);
         while (!addTeamTask.isComplete()) {}
 
-        if (addTeamTask.isSuccessful())
-            return addTeamTask.getResult().getId();
+        if (addTeamTask.isSuccessful()) {
+            CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
+            Map<String, Object> user = new HashMap<>();
+            user.put("user_id", userId);
+            user.put("team_id", addTeamTask.getResult().getId());
+            user.put("role", "Admin");
 
+            Task<DocumentReference> addUsers_TeamsTask = users_teamsCollection.add(user);
+            while (!addUsers_TeamsTask.isComplete()) {}
+
+            if (addUsers_TeamsTask.isSuccessful())
+                return addTeamTask.getResult().getId();
+        }
         return "Error adding team";
     }
 
-    public static String addUserToTeam(String userId, String teamId) {
+    public static String addUserToTeam(String userId, String teamId, String role) {
         CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
-
+        CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
         Query queryCheckJointTeam = users_teamsCollection.whereEqualTo("user_id", userId).whereEqualTo("team_id", teamId);
+
+        Task<DocumentSnapshot> checkTeamExistTask = teamsCollection.document(teamId).get();
+        while (!checkTeamExistTask.isComplete()) {}  //blocks until query is executed
+        if(!checkTeamExistTask.getResult().exists())
+            return "Team doesn't exist";
+
         Task<QuerySnapshot> queryCheckJoinTask = queryCheckJointTeam.get();
 
         while (!queryCheckJoinTask.isComplete()) {
@@ -48,6 +64,7 @@ public class TeamsRequests {
         Map<String, Object> user = new HashMap<>();
         user.put("user_id", userId);
         user.put("team_id", teamId);
+        user.put("role", role);
 
         Task<DocumentReference> addUsers_TeamsTask = users_teamsCollection.add(user);
         while (!addUsers_TeamsTask.isComplete()) {}

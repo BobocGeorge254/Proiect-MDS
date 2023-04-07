@@ -124,12 +124,10 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 String teamName = act_teams_fr_listing_create_team_card_name.getText().toString().trim();
                 String teamDescription = act_teams_fr_listing_create_team_card_description.getText().toString().trim();
 
-                String response = TeamsRequests.createTeam(teamName, teamDescription);
+                String response = TeamsRequests.createTeam(teamName, teamDescription, PreferencesManager.getUserId(getContext()));
                 System.out.println(response);
 
                 if(!response.equals("Error adding team")) {
-                    String response2 = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), response);
-                    System.out.println(response2);
                     dataTeamCardList.add(new DataTeamCard(response, teamName, teamDescription));
                     adapterTeams.notifyItemInserted(dataTeamCardList.size() - 1);
                 }
@@ -143,7 +141,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 String teamCode = act_teams_fr_listing_join_team_card_ET.getText().toString().trim();
-                String response = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), teamCode);
+                String response = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), teamCode, "Member");
 
                 System.out.println(response);
                 if(response.equals(teamCode)) {
