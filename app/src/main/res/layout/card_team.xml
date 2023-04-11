@@ -37,6 +37,15 @@
             android:textStyle="bold"
             android:textAlignment="center"/>
 
+        <Button
+            android:id="@+id/card_team_open_button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Open"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

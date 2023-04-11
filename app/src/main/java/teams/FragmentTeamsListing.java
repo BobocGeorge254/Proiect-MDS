@@ -3,6 +3,8 @@ package teams;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,8 +88,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_join_team_card_cancel_button_onClick();
     }
 
-    private void act_teams_fr_listing_create_team_button_onClick()
-    {
+    private void act_teams_fr_listing_create_team_button_onClick() {
         act_teams_fr_listing_create_team_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,8 +97,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void act_teams_fr_listing_join_team_button_onClick()
-    {
+    private void act_teams_fr_listing_join_team_button_onClick() {
         act_teams_fr_listing_join_team_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,8 +106,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void act_teams_fr_listing_create_team_card_cancel_button_onClick()
-    {
+    private void act_teams_fr_listing_create_team_card_cancel_button_onClick() {
         act_teams_fr_listing_create_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,8 +115,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void act_teams_fr_listing_create_team_card_create_button_onClick()
-    {
+    private void act_teams_fr_listing_create_team_card_create_button_onClick() {
         act_teams_fr_listing_create_team_card_create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +125,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 String response = TeamsRequests.createTeam(teamName, teamDescription, PreferencesManager.getUserId(getContext()));
                 System.out.println(response);
 
-                if(!response.equals("Error adding team")) {
+                if (!response.equals("Error adding team")) {
                     dataTeamCardList.add(new DataTeamCard(response, teamName, teamDescription));
                     adapterTeams.notifyItemInserted(dataTeamCardList.size() - 1);
                 }
@@ -135,8 +133,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void act_teams_fr_listing_join_team_card_join_button_onClick()
-    {
+    private void act_teams_fr_listing_join_team_card_join_button_onClick() {
         act_teams_fr_listing_join_team_card_join_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +141,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 String response = TeamsRequests.addUserToTeam(PreferencesManager.getUserId(getContext()), teamCode, "Member");
 
                 System.out.println(response);
-                if(response.equals(teamCode)) {
+                if (response.equals(teamCode)) {
                     dataTeamCardList.clear();
                     dataTeamCardList.addAll(TeamsRequests.getTeams(PreferencesManager.getUserId(getContext())));
                     adapterTeams.notifyDataSetChanged();
@@ -153,8 +150,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void act_teams_fr_listing_join_team_card_cancel_button_onClick()
-    {
+    private void act_teams_fr_listing_join_team_card_cancel_button_onClick() {
         act_teams_fr_listing_join_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,12 +159,26 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void setTeamsAdapter()
-    {
+    private void setTeamsAdapter() {
         adapterTeams = new AdapterTeams(dataTeamCardList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         act_teams_fr_listing_recycleview.setLayoutManager(layoutManager);
         act_teams_fr_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
         act_teams_fr_listing_recycleview.setAdapter(adapterTeams);
+
+        adapterTeams.setOnTeamCardOpenButtonClickListener(new OnTeamCardOpenButtonClickListener() {
+            @Override
+            public void onCardItemClick(String teamId) {
+                PreferencesManager.saveLastOpenedTeamId(getContext(), teamId);
+                setTeamPostsFragment();
+            }
+        });
+    }
+
+    private void setTeamPostsFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsTeamPosts());
+        fragmentTransaction.commit();
     }
 }
