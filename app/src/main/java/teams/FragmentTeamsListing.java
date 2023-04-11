@@ -35,7 +35,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private EditText act_teams_fr_listing_create_team_card_description;
     private Button act_teams_fr_listing_create_team_card_create_button;
     private Button act_teams_fr_listing_create_team_card_cancel_button;
-    private Button act_teams_frt_listing_mew_nav_profile_button ;
     private LinearLayout act_teams_fr_listing_join_team_window;
     private Button act_teams_fr_listing_join_team_card_join_button;
     private Button act_teams_fr_listing_join_team_card_cancel_button;
@@ -77,7 +76,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_join_team_card_join_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_join_button);
         act_teams_fr_listing_join_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_cancel_button);
         act_teams_fr_listing_join_team_card_ET = view.findViewById(R.id.act_teams_fr_listing_join_team_card_ET);
-        act_teams_frt_listing_mew_nav_profile_button = view.findViewById(R.id.act_teams_fr_listing_menu_nav_profile_button);
         act_authentication_fr_register_username_ET = view.findViewById(R.id.act_authentication_fr_register_username_ET);
     }
 
@@ -89,7 +87,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_create_team_card_create_button_onClick();
         act_teams_fr_listing_join_team_card_join_button_onClick();
         act_teams_fr_listing_join_team_card_cancel_button_onClick();
-        act_teams_fr_listing_menu_nav_profile_button_onClick();
     }
 
     private void act_teams_fr_listing_create_team_button_onClick()
@@ -165,18 +162,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
-
-    private void act_teams_fr_listing_menu_nav_profile_button_onClick() {
-        act_teams_frt_listing_mew_nav_profile_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent switch_to_profile = new Intent(getContext(), ProfileActivity.class) ;
-                //String username = act_authentication_fr_register_username_ET.getText().toString().trim();
-                //switch_to_profile.putExtra("username", username) ;
-                startActivity(switch_to_profile);
             }
         });
     }
