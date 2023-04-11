@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.register.R;
@@ -20,6 +22,12 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
     private final ArrayList<DataTeamCard> teamsList;
     private Context context;
 
+    private OnTeamCardOpenButtonClickListener onTeamCardOpenButtonClickListener;
+
+    public void setOnTeamCardOpenButtonClickListener(OnTeamCardOpenButtonClickListener onTeamCardOpenButtonClickListener) {
+        this.onTeamCardOpenButtonClickListener = onTeamCardOpenButtonClickListener;
+    }
+
     public AdapterTeams(ArrayList<DataTeamCard> teamsList, Context context)
     {
         this.teamsList = teamsList;
@@ -29,11 +37,13 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView card_name;
         private final TextView card_description;
+        private final Button card_open_button;
 
         public MyViewHolder(final View view) {
             super(view);
             card_name = view.findViewById(R.id.card_team_name_TW);
             card_description = view.findViewById(R.id.card_team_description_TW);
+            card_open_button = view.findViewById(R.id.card_team_open_button);
         }
     }
 
@@ -51,6 +61,16 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
 
         String description = teamsList.get(position).getDescription();
         holder.card_description.setText(description);
+
+        String id = teamsList.get(position).getId();
+
+        holder.card_open_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onTeamCardOpenButtonClickListener != null)
+                    onTeamCardOpenButtonClickListener.onCardItemClick(id);
+            }
+        });
     }
 
     @Override

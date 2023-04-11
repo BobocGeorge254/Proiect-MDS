@@ -14,6 +14,7 @@ import java.util.Map;
 
 import others.Manager;
 import teams.DataTeamCard;
+import teams.DataTeamChanelNameCard;
 
 public class TeamsRequests {
 
@@ -28,6 +29,18 @@ public class TeamsRequests {
         while (!addTeamTask.isComplete()) {}
 
         if (addTeamTask.isSuccessful()) {
+            //adding team default General chanel
+            CollectionReference teams_chanelsCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
+            Map<String, Object> chanel = new HashMap<>();
+            chanel.put("team_id", addTeamTask.getResult().getId());
+            chanel.put("name", "General");
+
+            Task<DocumentReference> addChanelToTeamTask = teams_chanelsCollection.add(chanel);
+            while (!addChanelToTeamTask.isComplete()) {}
+            if (!addChanelToTeamTask.isSuccessful())
+                return "Error adding team";
+
+            //adding user to team
             CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
             Map<String, Object> user = new HashMap<>();
             user.put("user_id", userId);
@@ -100,5 +113,43 @@ public class TeamsRequests {
             }
 
         return teamsList;
+    }
+
+    public static ArrayList<DataTeamChanelNameCard> getTeamsChanels(String teamId) {
+        CollectionReference teams_chanelsCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
+
+        Query queryGetChanels = teams_chanelsCollection.whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> queryGetChanelsTask = queryGetChanels.get();
+
+        while (!queryGetChanelsTask.isComplete()) {
+        }   //blocks until query is executed
+
+        ArrayList<DataTeamChanelNameCard> chanelsList = new ArrayList<>();
+
+        if (!queryGetChanelsTask.getResult().isEmpty())
+            for(DocumentSnapshot documentSnapshot : queryGetChanelsTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getId();
+                String name = documentSnapshot.getString("name");
+
+                chanelsList.add(new DataTeamChanelNameCard(id, name));
+            }
+
+        return chanelsList;
+    }
+
+    public static String addChanel(String teamId, String name) {
+        CollectionReference teams_chanelsCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
+
+        Map<String, Object> chanel = new HashMap<>();
+        chanel.put("team_id", teamId);
+        chanel.put("name", name);
+
+        Task<DocumentReference> addChanelTask = teams_chanelsCollection.add(chanel);
+        while (!addChanelTask.isComplete()) {}
+
+        if (addChanelTask.isSuccessful())
+            return addChanelTask.getResult().getId();
+
+        return "Error adding chanel";
     }
 }
