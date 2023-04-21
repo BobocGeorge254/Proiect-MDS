@@ -16,13 +16,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.register.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import database_connection.TeamsRequests;
+import database_connection.MessagesRequests;
 import interfaces.ActivityBasics;
 import others.PreferencesManager;
 
@@ -40,10 +44,14 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private LinearLayout act_teams_fr_listing_join_team_window;
     private Button act_teams_fr_listing_join_team_card_join_button;
     private Button act_teams_fr_listing_join_team_card_cancel_button;
+
     private EditText act_teams_fr_listing_join_team_card_ET;
     private View view;
     private AdapterTeams adapterTeams;
     private ArrayList<DataTeamCard> dataTeamCardList;
+
+    public FragmentTeamsListing() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +113,17 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             }
         });
     }
+
+//    private void act_teams_fr_messages_button_onClick() {
+//        act_teams_fr_messages_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Set<String> usersMessageCollection;
+//                usersMessageCollection = MessagesRequests.getUsersMessage(PreferencesManager.getUserId(getContext()));
+//                MyLenghtText.setText(String.valueOf(usersMessageCollection.size()));
+//            }
+//        });
+//    }
 
     private void act_teams_fr_listing_create_team_card_cancel_button_onClick() {
         act_teams_fr_listing_create_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {

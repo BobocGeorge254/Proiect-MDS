@@ -52,7 +52,7 @@
             app:iconTint="@color/white" />
 
         <Button
-            android:id="@+id/act_teams_fr_listing_menu_nav_chat_button"
+            android:id="@+id/act_teams_fr_messages_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -62,6 +62,8 @@
             android:textStyle="bold"
             app:cornerRadius="0dp"
             app:iconTint="@color/white" />
+
+
 
     </LinearLayout>
 
