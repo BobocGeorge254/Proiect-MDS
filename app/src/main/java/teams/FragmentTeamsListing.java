@@ -114,17 +114,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-//    private void act_teams_fr_messages_button_onClick() {
-//        act_teams_fr_messages_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Set<String> usersMessageCollection;
-//                usersMessageCollection = MessagesRequests.getUsersMessage(PreferencesManager.getUserId(getContext()));
-//                MyLenghtText.setText(String.valueOf(usersMessageCollection.size()));
-//            }
-//        });
-//    }
-
     private void act_teams_fr_listing_create_team_card_cancel_button_onClick() {
         act_teams_fr_listing_create_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,7 +24,6 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
 
     private Button act_teams_fr_listing_menu_nav_team_button;
     private Button act_teams_fr_messages_button;
-//    TextView MyLenghtText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
     public void getActivityElements() {
         act_teams_fr_listing_menu_nav_team_button = findViewById(R.id.act_teams_fr_listing_menu_nav_team_button);
         act_teams_fr_messages_button = findViewById(R.id.act_teams_fr_messages_button);
-//        MyLenghtText = findViewById(R.id.test_message);
+
     }
 
     @Override
