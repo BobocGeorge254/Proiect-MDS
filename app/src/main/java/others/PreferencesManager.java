@@ -8,6 +8,7 @@ public class PreferencesManager {
 
     static String ct_userId = "USER_ID";
     static String ct_lastOpenedTeamId= "LAST_OPENED_TEAM_ID";
+    static String ct_lastOpenedTeamChanelId= "LAST_OPENED_TEAM_CHANEL_ID";
 
     public static void saveUserId(Context context, String userId)
     {
@@ -35,5 +36,19 @@ public class PreferencesManager {
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(ct_lastOpenedTeamId, null);
+    }
+
+    public static void saveLastOpenedTeamChanelId(Context context, String teamChanelId)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ct_lastOpenedTeamChanelId, teamChanelId);
+        editor.apply();
+    }
+
+    public static String getLastOpenedTeamChanelId(Context context)
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(ct_lastOpenedTeamChanelId, null);
     }
 }

@@ -14,7 +14,7 @@ import com.example.register.R;
 
 import java.util.ArrayList;
 
-public class AdapterTeamChanelName  extends RecyclerView.Adapter<AdapterTeamChanelName.MyViewHolder> {
+public class AdapterTeamChanelName extends RecyclerView.Adapter<AdapterTeamChanelName.MyViewHolder> {
 
     private final ArrayList<DataTeamChanelNameCard> teamChanelNameList;
     private Context context;

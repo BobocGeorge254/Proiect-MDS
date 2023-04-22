@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import com.example.register.R;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import database_connection.OtherRequests;
 import database_connection.TeamsRequests;
 import interfaces.ActivityBasics;
 import others.PreferencesManager;
@@ -27,15 +29,25 @@ import others.PreferencesManager;
 public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
     private TextView act_teams_fr_team_posts_team_id_TW;
-    private RecyclerView act_teams_fr_team_posts_recycleview;
+    private RecyclerView act_teams_fr_team_posts_chanels_listing_recycleview;
+    private RecyclerView act_teams_fr_team_posts_posts_listing_recycleview;
     private Button act_teams_fr_team_posts_add_chanel_button;
+    private Button act_teams_fr_team_posts_add_post_button;
     private LinearLayout act_teams_fr_team_post_create_chanel_window;
     private EditText act_teams_fr_team_post_create_chanel_name_ET;
     private Button act_teams_fr_team_post_create_chanel_create_button;
     private Button act_teams_fr_team_post_create_chanel_cancel_button;
+    private LinearLayout act_teams_fr_team_post_create_post_window;
+    private EditText act_teams_fr_team_post_create_post_text_ET;
+    private Button act_teams_fr_team_post_create_post_create_button;
+    private Button act_teams_fr_team_post_create_post_cancel_button;
     private View view;
+
     private AdapterTeamChanelName adapterTeamsChanelName;
     private ArrayList<DataTeamChanelNameCard> dataTeamChanelNameCardList;
+
+    private AdapterTeamPost adapterTeamsPosts;
+    private ArrayList<DataTeamPost> dataTeamPostsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +57,13 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         setListeners();
 
         dataTeamChanelNameCardList = TeamsRequests.getTeamsChanels(PreferencesManager.getLastOpenedTeamId(getContext()));
+        PreferencesManager.saveLastOpenedTeamChanelId(getContext(), dataTeamChanelNameCardList.get(0).getId());
+        dataTeamPostsList = TeamsRequests.getTeamsPosts(PreferencesManager.getLastOpenedTeamChanelId(getContext()));
         setTeamsChanelNamesAdapter();
+        setTeamsPostsAdapter();
 
         act_teams_fr_team_post_create_chanel_window.setVisibility(View.INVISIBLE);
+        act_teams_fr_team_post_create_post_window.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -55,12 +71,18 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
     @Override
     public void getActivityElements() {
-        act_teams_fr_team_posts_recycleview = view.findViewById(R.id.act_teams_fr_team_posts_recycleview);
+        act_teams_fr_team_posts_chanels_listing_recycleview = view.findViewById(R.id.act_teams_fr_team_posts_chanels_listing_recycleview);
+        act_teams_fr_team_posts_posts_listing_recycleview = view.findViewById(R.id.act_teams_fr_team_posts_posts_listing_recycleview);
         act_teams_fr_team_posts_add_chanel_button = view.findViewById(R.id.act_teams_fr_team_posts_add_chanel_button);
+        act_teams_fr_team_posts_add_post_button = view.findViewById(R.id.act_teams_fr_team_posts_add_post_button);
         act_teams_fr_team_post_create_chanel_window = view.findViewById(R.id.act_teams_fr_team_post_create_chanel_window);
         act_teams_fr_team_post_create_chanel_name_ET = view.findViewById(R.id.act_teams_fr_team_post_create_chanel_name_ET);
         act_teams_fr_team_post_create_chanel_create_button = view.findViewById(R.id.act_teams_fr_team_post_create_chanel_create_button);
         act_teams_fr_team_post_create_chanel_cancel_button = view.findViewById(R.id.act_teams_fr_team_post_create_chanel_cancel_button);
+        act_teams_fr_team_post_create_post_window = view.findViewById(R.id.act_teams_fr_team_post_create_post_window);
+        act_teams_fr_team_post_create_post_text_ET = view.findViewById(R.id.act_teams_fr_team_post_create_post_text_ET);
+        act_teams_fr_team_post_create_post_create_button = view.findViewById(R.id.act_teams_fr_team_post_create_post_create_button);
+        act_teams_fr_team_post_create_post_cancel_button = view.findViewById(R.id.act_teams_fr_team_post_create_post_cancel_button);
 
         act_teams_fr_team_posts_team_id_TW = view.findViewById(R.id.act_teams_fr_team_posts_team_id_TW);
         act_teams_fr_team_posts_team_id_TW.setText(PreferencesManager.getLastOpenedTeamId(getContext()));
@@ -71,6 +93,9 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_posts_add_chanel_button_onClick();
         act_teams_fr_team_post_create_chanel_create_button_onClick();
         act_teams_fr_team_post_create_chanel_cancel_button_onClick();
+        act_teams_fr_team_posts_add_post_button_onClick();
+        act_teams_fr_team_post_create_post_create_button_onClick();
+        act_teams_fr_team_post_create_post_cancel_button_onClick();
     }
 
     private void act_teams_fr_team_posts_add_chanel_button_onClick() {
@@ -106,11 +131,54 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         });
     }
 
+    private void act_teams_fr_team_posts_add_post_button_onClick() {
+        act_teams_fr_team_posts_add_post_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_team_post_create_post_window.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void act_teams_fr_team_post_create_post_create_button_onClick() {
+        act_teams_fr_team_post_create_post_create_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = act_teams_fr_team_post_create_post_text_ET.getText().toString().trim();
+                String response = TeamsRequests.addTeamPost(PreferencesManager.getUserId(getContext()), PreferencesManager.getLastOpenedTeamChanelId(getContext()),
+                        PreferencesManager.getLastOpenedTeamId(getContext()), text);
+
+                if(!response.equals("Error adding team post")) {
+                    String senderName = OtherRequests.getUsernameByUserId(PreferencesManager.getUserId(getContext()));
+                    dataTeamPostsList.add(new DataTeamPost(response, senderName, text, LocalDate.now().toString(), PreferencesManager.getUserId(getContext())));
+                    adapterTeamsPosts.notifyItemInserted(dataTeamPostsList.size() - 1);
+                }
+            }
+        });
+    }
+
+    private void act_teams_fr_team_post_create_post_cancel_button_onClick() {
+        act_teams_fr_team_post_create_post_cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_team_post_create_post_window.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
     private void setTeamsChanelNamesAdapter() {
         adapterTeamsChanelName = new AdapterTeamChanelName(dataTeamChanelNameCardList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        act_teams_fr_team_posts_recycleview.setLayoutManager(layoutManager);
-        act_teams_fr_team_posts_recycleview.setItemAnimator(new DefaultItemAnimator());
-        act_teams_fr_team_posts_recycleview.setAdapter(adapterTeamsChanelName);
+        act_teams_fr_team_posts_chanels_listing_recycleview.setLayoutManager(layoutManager);
+        act_teams_fr_team_posts_chanels_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
+        act_teams_fr_team_posts_chanels_listing_recycleview.setAdapter(adapterTeamsChanelName);
+    }
+
+    private void setTeamsPostsAdapter() {
+        adapterTeamsPosts = new AdapterTeamPost(dataTeamPostsList, getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        act_teams_fr_team_posts_posts_listing_recycleview.setLayoutManager(layoutManager);
+        act_teams_fr_team_posts_posts_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
+        act_teams_fr_team_posts_posts_listing_recycleview.setAdapter(adapterTeamsPosts);
     }
 }

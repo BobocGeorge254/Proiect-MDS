@@ -7,14 +7,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import others.Manager;
 import teams.DataTeamCard;
 import teams.DataTeamChanelNameCard;
+import teams.DataTeamPost;
 
 public class TeamsRequests {
 
@@ -151,5 +152,49 @@ public class TeamsRequests {
             return addChanelTask.getResult().getId();
 
         return "Error adding chanel";
+    }
+
+    public static ArrayList<DataTeamPost> getTeamsPosts(String teamChanelId) {
+        CollectionReference teams_postsCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts");
+
+        Query queryGetPosts = teams_postsCollection.whereEqualTo("team_chanel_id", teamChanelId);
+        Task<QuerySnapshot> queryGetPostsTask = queryGetPosts.get();
+
+        while (!queryGetPostsTask.isComplete()) {
+        }   //blocks until query is executed
+
+        ArrayList<DataTeamPost> postsList = new ArrayList<>();
+
+        if (!queryGetPostsTask.getResult().isEmpty())
+            for(DocumentSnapshot documentSnapshot : queryGetPostsTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getId();
+                String senderId = documentSnapshot.getString("sender_id");
+                String text = documentSnapshot.getString("text");
+                String sendDate = documentSnapshot.getString("date_posted");
+                String senderName = OtherRequests.getUsernameByUserId(senderId);
+
+                postsList.add(new DataTeamPost(id, senderName, text, sendDate, senderId));
+            }
+
+        return postsList;
+    }
+
+    public static String addTeamPost(String senderId, String teamChanelId, String teamId, String text) {
+        CollectionReference teams_postsCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts");
+
+        Map<String, Object> post = new HashMap<>();
+        post.put("date_posted", LocalDate.now().toString());
+        post.put("sender_id", senderId);
+        post.put("team_chanel_id", teamChanelId);
+        post.put("team_id", teamId);
+        post.put("text", text);
+
+        Task<DocumentReference> addPostTask = teams_postsCollection.add(post);
+        while (!addPostTask.isComplete()) {}
+
+        if (addPostTask.isSuccessful())
+            return addPostTask.getResult().getId();
+
+        return "Error adding team post";
     }
 }
