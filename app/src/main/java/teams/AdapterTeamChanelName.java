@@ -19,6 +19,12 @@ public class AdapterTeamChanelName extends RecyclerView.Adapter<AdapterTeamChane
     private final ArrayList<DataTeamChanelNameCard> teamChanelNameList;
     private Context context;
 
+    private OnTeamChanelCardClickListener onTeamChanelCardClickListener;
+
+    public void setOnTeamChanelCardClickListener(OnTeamChanelCardClickListener onTeamChanelCardClickListener) {
+        this.onTeamChanelCardClickListener = onTeamChanelCardClickListener;
+    }
+
 
     public AdapterTeamChanelName(ArrayList<DataTeamChanelNameCard> teamChanelNameList, Context context)
     {
@@ -46,6 +52,17 @@ public class AdapterTeamChanelName extends RecyclerView.Adapter<AdapterTeamChane
     public void onBindViewHolder(@NonNull AdapterTeamChanelName.MyViewHolder holder, int position) {
         String name = teamChanelNameList.get(position).getName();
         holder.card_name.setText(name);
+
+        String id = teamChanelNameList.get(position).getId();
+
+        holder.card_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(id);
+                if(onTeamChanelCardClickListener != null)
+                    onTeamChanelCardClickListener.onCardItemClick(id);
+            }
+        });
     }
 
     @Override

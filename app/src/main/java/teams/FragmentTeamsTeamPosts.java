@@ -20,6 +20,7 @@ import com.example.register.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import database_connection.OtherRequests;
 import database_connection.TeamsRequests;
@@ -172,6 +173,16 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_posts_chanels_listing_recycleview.setLayoutManager(layoutManager);
         act_teams_fr_team_posts_chanels_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
         act_teams_fr_team_posts_chanels_listing_recycleview.setAdapter(adapterTeamsChanelName);
+
+        adapterTeamsChanelName.setOnTeamChanelCardClickListener(new OnTeamChanelCardClickListener() {
+            @Override
+            public void onCardItemClick(String teamChanelId) {
+                PreferencesManager.saveLastOpenedTeamChanelId(getContext(), teamChanelId);
+                dataTeamPostsList.clear();
+                dataTeamPostsList.addAll(TeamsRequests.getTeamsPosts(teamChanelId));
+                adapterTeamsPosts.notifyDataSetChanged();
+            }
+        });
     }
 
     private void setTeamsPostsAdapter() {
