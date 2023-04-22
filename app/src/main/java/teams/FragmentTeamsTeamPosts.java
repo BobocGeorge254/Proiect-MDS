@@ -42,6 +42,10 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
     private EditText act_teams_fr_team_post_create_post_text_ET;
     private Button act_teams_fr_team_post_create_post_create_button;
     private Button act_teams_fr_team_post_create_post_cancel_button;
+    private LinearLayout act_teams_fr_team_post_create_reply_window;
+    private EditText act_teams_fr_team_post_create_reply_text_ET;
+    private Button act_teams_fr_team_post_create_reply_create_button;
+    private Button act_teams_fr_team_post_create_reply_cancel_button;
     private View view;
 
     private AdapterTeamChanelName adapterTeamsChanelName;
@@ -49,6 +53,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
     private AdapterTeamPost adapterTeamsPosts;
     private ArrayList<DataTeamPost> dataTeamPostsList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
         act_teams_fr_team_post_create_chanel_window.setVisibility(View.INVISIBLE);
         act_teams_fr_team_post_create_post_window.setVisibility(View.INVISIBLE);
+        act_teams_fr_team_post_create_reply_window.setVisibility(View.INVISIBLE);
 
         return view;
     }
@@ -84,6 +90,11 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_post_create_post_text_ET = view.findViewById(R.id.act_teams_fr_team_post_create_post_text_ET);
         act_teams_fr_team_post_create_post_create_button = view.findViewById(R.id.act_teams_fr_team_post_create_post_create_button);
         act_teams_fr_team_post_create_post_cancel_button = view.findViewById(R.id.act_teams_fr_team_post_create_post_cancel_button);
+        act_teams_fr_team_post_create_reply_window = view.findViewById(R.id.act_teams_fr_team_post_create_reply_window);
+        act_teams_fr_team_post_create_reply_text_ET = view.findViewById(R.id.act_teams_fr_team_post_create_reply_text_ET);
+        act_teams_fr_team_post_create_reply_create_button = view.findViewById(R.id.act_teams_fr_team_post_create_reply_create_button);
+        act_teams_fr_team_post_create_reply_cancel_button = view.findViewById(R.id.act_teams_fr_team_post_create_reply_cancel_button);
+
 
         act_teams_fr_team_posts_team_id_TW = view.findViewById(R.id.act_teams_fr_team_posts_team_id_TW);
         act_teams_fr_team_posts_team_id_TW.setText(PreferencesManager.getLastOpenedTeamId(getContext()));
@@ -97,6 +108,8 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_posts_add_post_button_onClick();
         act_teams_fr_team_post_create_post_create_button_onClick();
         act_teams_fr_team_post_create_post_cancel_button_onClick();
+        act_teams_fr_team_post_create_reply_create_button_onClick();
+        act_teams_fr_team_post_create_reply_cancel_button_onClick();
     }
 
     private void act_teams_fr_team_posts_add_chanel_button_onClick() {
@@ -167,6 +180,30 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         });
     }
 
+    private void act_teams_fr_team_post_create_reply_create_button_onClick() {
+        act_teams_fr_team_post_create_reply_create_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = act_teams_fr_team_post_create_reply_text_ET.getText().toString().trim();
+                String response = TeamsRequests.addTeamPostReply(PreferencesManager.getUserId(getContext()), PreferencesManager.getLastOpenedTeamPostReplyingId(getContext()),
+                        PreferencesManager.getLastOpenedTeamChanelId(getContext()), PreferencesManager.getLastOpenedTeamId(getContext()), text);
+
+                if(!response.equals("Error adding team post reply")) {
+                   adapterTeamsPosts.notifyReplyDataChanged(PreferencesManager.getLastOpenedTeamPostReplyingId(getContext()));
+                }
+            }
+        });
+    }
+
+    private void act_teams_fr_team_post_create_reply_cancel_button_onClick() {
+        act_teams_fr_team_post_create_reply_cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_team_post_create_reply_window.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
     private void setTeamsChanelNamesAdapter() {
         adapterTeamsChanelName = new AdapterTeamChanelName(dataTeamChanelNameCardList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -191,5 +228,13 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_posts_posts_listing_recycleview.setLayoutManager(layoutManager);
         act_teams_fr_team_posts_posts_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
         act_teams_fr_team_posts_posts_listing_recycleview.setAdapter(adapterTeamsPosts);
+
+        adapterTeamsPosts.setOnTeamPostReplyButtonClickListener(new OnTeamPostReplyButtonClickListener() {
+            @Override
+            public void onCardItemClick(String teamPostId) {
+                PreferencesManager.saveLastOpenedTeamPostReplyingId(getContext(), teamPostId);
+                act_teams_fr_team_post_create_reply_window.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
