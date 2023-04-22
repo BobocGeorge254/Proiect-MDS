@@ -288,4 +288,38 @@ public class TeamsRequests {
 
         return repliesList;
     }
+
+    public static String deleteTeamPostReply(String teamPostReplyId) {
+        CollectionReference teams_postsRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts_Replies");
+
+        Task<Void> deletePostReplyTask = teams_postsRepliesCollection.document(teamPostReplyId).delete();
+        while (!deletePostReplyTask.isComplete()) {}
+
+        if (deletePostReplyTask.isSuccessful())
+            return "Post reply deleted successfully";
+
+        return "Error deleting team post reply";
+    }
+
+    public static String deleteTeamPost(String teamPostId) {
+        CollectionReference teams_postsCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts");
+        CollectionReference teams_postsRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts_Replies");
+
+        Query queryGetReplies = teams_postsRepliesCollection.whereEqualTo("team_post_id", teamPostId);
+        Task<QuerySnapshot> queryGetRepliesTask = queryGetReplies.get();
+
+        while (!queryGetRepliesTask.isComplete()) {}   //blocks until query is executed
+
+        if(!queryGetRepliesTask.getResult().isEmpty())
+            for(DocumentSnapshot documentSnapshot : queryGetRepliesTask.getResult().getDocuments())  //deletes the replies on this post
+                deleteTeamPostReply(documentSnapshot.getId());
+
+        Task<Void> deletePostTask = teams_postsCollection.document(teamPostId).delete();
+        while (!deletePostTask.isComplete()) {}
+
+        if (deletePostTask.isSuccessful())
+            return "Post deleted successfully";
+
+        return "Error deleting post";
+    }
 }

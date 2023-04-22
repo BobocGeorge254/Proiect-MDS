@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,11 @@ public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostRe
     private final ArrayList<DataTeamPostReply> teamPostRepliesList;
     private Context context;
 
+    private OnTeamPostReplyDeleteClickListener onTeamPostReplyDeleteClickListener;
+
+    public void setOnTeamPostReplyDeleteClickListener(OnTeamPostReplyDeleteClickListener onTeamPostReplyDeleteClickListener) {
+        this.onTeamPostReplyDeleteClickListener = onTeamPostReplyDeleteClickListener;
+    }
 
     public AdapterTeamPostReply(ArrayList<DataTeamPostReply> teamPostRepliesList, Context context)
     {
@@ -29,12 +35,14 @@ public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostRe
         private final TextView card_sender_name;
         private final TextView card_send_date;
         private final TextView card_text;
+        private final Button card_delete;
 
         public MyViewHolder(final View view) {
             super(view);
             card_sender_name = view.findViewById(R.id.card_team_post_reply_sender_name_TW);
             card_send_date = view.findViewById(R.id.card_team_post_reply_send_date_TW);
             card_text = view.findViewById(R.id.card_team_post_reply_text_TW);
+            card_delete = view.findViewById(R.id.card_team_post_reply_delete_button);
         }
     }
 
@@ -55,6 +63,15 @@ public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostRe
 
         String text = teamPostRepliesList.get(position).getText();
         holder.card_text.setText(text);
+
+        String teamPostId = teamPostRepliesList.get(position).getId();
+
+        holder.card_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onTeamPostReplyDeleteClickListener.onCardItemClick(teamPostId);
+            }
+        });
     }
 
     @Override

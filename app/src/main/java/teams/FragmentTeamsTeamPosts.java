@@ -236,5 +236,19 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
                 act_teams_fr_team_post_create_reply_window.setVisibility(View.VISIBLE);
             }
         });
+
+        adapterTeamsPosts.setOnTeamPostDeleteClickListener(new OnTeamPostDeleteClickListener() {
+            @Override
+            public void onCardItemClick(String teamPostId) {
+                String response = TeamsRequests.deleteTeamPost(teamPostId);
+
+                if(response.equals("Post deleted successfully")) {
+                    dataTeamPostsList.clear();
+                    dataTeamPostsList.addAll(TeamsRequests.getTeamsPosts(PreferencesManager.getLastOpenedTeamChanelId(getContext())));
+                    adapterTeamsPosts.notifyDataSetChanged();
+                    adapterTeamsPosts.notifyReplyDataChanged(teamPostId);
+                }
+            }
+        });
     }
 }

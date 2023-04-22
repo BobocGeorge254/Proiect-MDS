@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,10 +30,15 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
 
     private OnTeamPostReplyButtonClickListener onTeamPostReplyButtonClickListener;
 
+    private OnTeamPostDeleteClickListener onTeamPostDeleteClickListener;
+
+    public void setOnTeamPostDeleteClickListener(OnTeamPostDeleteClickListener onTeamPostDeleteClickListener) {
+        this.onTeamPostDeleteClickListener = onTeamPostDeleteClickListener;
+    }
+
     public void setOnTeamPostReplyButtonClickListener(OnTeamPostReplyButtonClickListener onTeamPostReplyButtonClickListener) {
         this.onTeamPostReplyButtonClickListener = onTeamPostReplyButtonClickListener;
     }
-
 
     public AdapterTeamPost(ArrayList<DataTeamPost> teamPostList, Context context) {
         this.teamPostList = teamPostList;
@@ -46,6 +52,7 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
         private final TextView card_show_replies;
         private final TextView card_create_reply;
         private final RecyclerView card_replies_recycleview;
+        private final Button card_delete_button;
 
         private final ArrayList<DataTeamPostReply> dataTeamPostsRepliesList;
         private AdapterTeamPostReply adapterTeamsPostsReplies;
@@ -59,6 +66,7 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
             card_show_replies = view.findViewById(R.id.card_team_post_show_replies_TW);
             card_create_reply = view.findViewById(R.id.card_team_post_create_reply_TW);
             card_replies_recycleview = view.findViewById(R.id.card_team_post_replies_recycleview);
+            card_delete_button = view.findViewById(R.id.card_team_post_delete_button);
 
             dataTeamPostsRepliesList = new ArrayList<>();
             teamPostId = "";
@@ -103,6 +111,15 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
         holder.card_replies_recycleview.setItemAnimator(new DefaultItemAnimator());
         holder.card_replies_recycleview.setAdapter(holder.adapterTeamsPostsReplies);
 
+        holder.adapterTeamsPostsReplies.setOnTeamPostReplyDeleteClickListener(new OnTeamPostReplyDeleteClickListener() {
+            @Override
+            public void onCardItemClick(String teamPostReplyId) {
+                String response = TeamsRequests.deleteTeamPostReply(teamPostReplyId);
+                if(response.equals("Post reply deleted successfully"))
+                    notifyReplyDataChanged(teamPostId);
+            }
+        }); //this is used to delete replies on this post; it is called when we press delete reply button on reply card
+
         holder.card_create_reply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +147,14 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
                     holder.adapterTeamsPostsReplies.notifyDataSetChanged();
                     holder.card_show_replies.setText(showRepliesText);
                 }
+            }
+        });
+
+        holder.card_delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onTeamPostDeleteClickListener != null)
+                    onTeamPostDeleteClickListener.onCardItemClick(teamPostId);
             }
         });
     }

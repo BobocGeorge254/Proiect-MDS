@@ -49,6 +49,15 @@
             android:textSize="13sp"
             android:textStyle="bold"
             android:textAlignment="viewStart"/>
+
+        <Button
+            android:id="@+id/card_team_post_reply_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Delete reply"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_gravity="end"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
