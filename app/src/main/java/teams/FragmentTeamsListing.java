@@ -55,6 +55,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private LinearLayout act_teams_fr_listing_edit_window;
     private Button act_teams_fr_listing_edit_window_cancel_button;
     private Button act_teams_fr_listing_edit_window_delete_team_button;
+    private Button act_teams_fr_listing_edit_window_edit_team_button;
     private Button act_teams_fr_listing_edit_window_leave_team_button;
     private View view;
     private AdapterTeams adapterTeams;
@@ -101,6 +102,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_edit_window_delete_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_delete_team_button);
         act_teams_fr_listing_edit_window_leave_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_leave_team_button);
         act_teams_fr_listing_create_team_card_upload_image_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_upload_image_button);
+        act_teams_fr_listing_edit_window_edit_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_edit_team_button);
     }
 
     @Override
@@ -115,6 +117,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_edit_window_delete_team_button_onClick();
         act_teams_fr_listing_edit_window_leave_team_button_onClick();
         act_teams_fr_listing_create_team_card_upload_image_button_onClick();
+        act_teams_fr_listing_edit_window_edit_team_button_onClick();
     }
 
     private void act_teams_fr_listing_create_team_button_onClick() {
@@ -170,7 +173,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 if(!(uploadLogoResponse.equals("No image selected") || uploadLogoResponse.equals("Failed to upload team image")))
                     photoUri = uploadLogoResponse;
                 else
-                    photoUri = "team_logo/" + "default.png";
+                    photoUri = "default.png";
 
                 String response = TeamsRequests.createTeam(teamName, teamDescription, photoUri, PreferencesManager.getUserId(getContext()));
                 System.out.println(response);
@@ -235,6 +238,16 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
+    private void act_teams_fr_listing_edit_window_edit_team_button_onClick() {
+        act_teams_fr_listing_edit_window_edit_team_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PreferencesManager.getLastTeamPressedEditId(getContext());
+                setTeamEditFragment();
+            }
+        });
+    }
+
     private void act_teams_fr_listing_edit_window_leave_team_button_onClick() {
         act_teams_fr_listing_edit_window_leave_team_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,8 +285,10 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                 String roleInTeam = TeamsRequests.getTeamRole(PreferencesManager.getUserId(getContext()), PreferencesManager.getLastTeamPressedEditId(getContext()));
                 if(roleInTeam.equals("Admin")) {
                     act_teams_fr_listing_edit_window_delete_team_button.setEnabled(true);
+                    act_teams_fr_listing_edit_window_edit_team_button.setEnabled(true);
                 } else {
                     act_teams_fr_listing_edit_window_delete_team_button.setEnabled(false);
+                    act_teams_fr_listing_edit_window_edit_team_button.setEnabled(false);
                 }
 
                 act_teams_fr_listing_edit_window.setVisibility(View.VISIBLE);
@@ -287,6 +302,13 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsTeamPosts());
+        fragmentTransaction.commit();
+    }
+
+    private void setTeamEditFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsEditTeam());
         fragmentTransaction.commit();
     }
 

@@ -12,6 +12,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.io.File;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -299,6 +300,8 @@ public class TeamsRequests {
         CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
         CollectionReference team_chanelRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
 
+        String logoUri = getTeamData(teamId).getPhotoUri();   //used to
+
         Query queryGetPosts = teams_postsCollection.whereEqualTo("team_id", teamId);
         Task<QuerySnapshot> queryGetPostsTask = queryGetPosts.get();
 
@@ -312,6 +315,8 @@ public class TeamsRequests {
         while (!deleteTeamTask.isComplete()) {}
 
         if (deleteTeamTask.isSuccessful()) {   //now we delete the users_teams references and team chanels
+            FileRequest.deleteFile(logoUri);
+
             Query queryGetUsersTeams = users_teamsCollection.whereEqualTo("team_id", teamId);
             Task<QuerySnapshot> queryGetUsersTeamsTask = queryGetUsersTeams.get();
 
@@ -437,5 +442,36 @@ public class TeamsRequests {
             return  queryGetUsersTeamsTask.getResult().getDocuments().get(0).get("role").toString();
 
         return "Error checking team member role";
+    }
+
+    public static DataTeamCard getTeamData(String teamId) {
+        CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
+
+        Task<DocumentSnapshot> getTeamDetailsTask = teamsCollection.document(teamId).get();
+
+        while (!getTeamDetailsTask.isComplete()) {}  //blocks until query is executed
+
+        String name = getTeamDetailsTask.getResult().get("name").toString();
+        String description = getTeamDetailsTask.getResult().get("description").toString();
+        String photoUrl = getTeamDetailsTask.getResult().get("photo_uri").toString();
+
+        return new DataTeamCard(teamId, name, description, photoUrl);
+    }
+
+    public static String updateTeam(String teamId, String updatedTeamName, String updatedTeamDescription, String updatedPhotoUri) {
+        CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", updatedTeamName);
+        updates.put("description", updatedTeamDescription);
+        updates.put("photo_uri", updatedPhotoUri);
+
+        Task<Void> updateTeamTask = teamsCollection.document(teamId).update(updates);
+        while (!updateTeamTask.isComplete()) {}
+
+        if(updateTeamTask.isSuccessful())
+            return "Updated team successfully";
+
+        return "Error updating team";
     }
 }

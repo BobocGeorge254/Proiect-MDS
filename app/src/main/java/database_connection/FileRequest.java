@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 
 import com.example.register.R;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -66,6 +67,23 @@ public class FileRequest {
         }
 
         return BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder);
+    }
+
+    public static String deleteFile(String path) {
+        if(path.equals("default.png"))
+            return "File deleted from storage successfully";
+
+        StorageReference storageReference = Manager.dbConnection.getStorage().getReference().child(path);
+
+        Task<Void> deleteTask = storageReference.delete();
+
+        while(!deleteTask.isComplete()) {
+        }
+
+        if(deleteTask.isSuccessful())
+            return "File deleted from storage successfully";
+
+        return "Failed to delete file from storage";
     }
 
 

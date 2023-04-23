@@ -42,7 +42,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -222,8 +223,7 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="invisible">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/act_teams_fr_listing_edit_window_delete_team_button"
@@ -233,6 +233,14 @@
             android:layout_weight="1"
             android:text="Delete team"
             android:textColor="#ff0f2b"/>
+
+        <Button
+            android:id="@+id/act_teams_fr_listing_edit_window_edit_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Edit team"/>
 
         <Button
             android:id="@+id/act_teams_fr_listing_edit_window_leave_team_button"
