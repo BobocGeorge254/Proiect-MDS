@@ -164,7 +164,8 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
                 if(!response.equals("Error adding team post")) {
                     String senderName = OtherRequests.getUsernameByUserId(PreferencesManager.getUserId(getContext()));
-                    dataTeamPostsList.add(new DataTeamPost(response, senderName, text, LocalDate.now().toString(), PreferencesManager.getUserId(getContext())));
+                    dataTeamPostsList.add(new DataTeamPost(response, senderName, text, LocalDate.now().toString(), PreferencesManager.getUserId(getContext()),
+                            PreferencesManager.getLastOpenedTeamId(getContext())));
                     adapterTeamsPosts.notifyItemInserted(dataTeamPostsList.size() - 1);
                 }
             }

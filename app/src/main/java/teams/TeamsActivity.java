@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.example.register.R;
 
 import authentication.FragmentLogIn;
+import database_connection.FileRequest;
 import interfaces.ActivityBasics;
 
 public class TeamsActivity extends AppCompatActivity implements ActivityBasics {

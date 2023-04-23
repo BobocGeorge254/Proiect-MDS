@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import database_connection.TeamsRequests;
+import others.PreferencesManager;
 
 public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyViewHolder> {
 
@@ -157,6 +158,10 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
                     onTeamPostDeleteClickListener.onCardItemClick(teamPostId);
             }
         });
+
+        if(!(TeamsRequests.getTeamRole(PreferencesManager.getUserId(context), teamPostList.get(position).getTeamId()).equals("Admin") ||
+                teamPostList.get(position).getSenderId().equals(PreferencesManager.getUserId(context))))
+            holder.card_delete_button.setVisibility(View.INVISIBLE);
     }
 
     @Override

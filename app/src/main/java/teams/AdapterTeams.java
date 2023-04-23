@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,9 +15,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.register.R;
 
 import java.util.ArrayList;
+
+import database_connection.FileRequest;
 
 public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder> {
 
@@ -23,6 +28,12 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
     private Context context;
 
     private OnTeamCardOpenButtonClickListener onTeamCardOpenButtonClickListener;
+
+    private OnTeamCardEditButtonClickListener onTeamCardEditButtonClickListener;
+
+    public void setOnTeamCardEditButtonClickListener(OnTeamCardEditButtonClickListener onTeamCardEditButtonClickListener) {
+        this.onTeamCardEditButtonClickListener = onTeamCardEditButtonClickListener;
+    }
 
     public void setOnTeamCardOpenButtonClickListener(OnTeamCardOpenButtonClickListener onTeamCardOpenButtonClickListener) {
         this.onTeamCardOpenButtonClickListener = onTeamCardOpenButtonClickListener;
@@ -38,12 +49,16 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
         private final TextView card_name;
         private final TextView card_description;
         private final Button card_open_button;
+        private final ImageButton card_3dots_button;
+        private final ImageView card_logo;
 
         public MyViewHolder(final View view) {
             super(view);
             card_name = view.findViewById(R.id.card_team_name_TW);
             card_description = view.findViewById(R.id.card_team_description_TW);
             card_open_button = view.findViewById(R.id.card_team_open_button);
+            card_3dots_button = view.findViewById(R.id.card_team_3dots_imageButton);
+            card_logo = view.findViewById(R.id.card_team_logo_imageView);
         }
     }
 
@@ -62,13 +77,24 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
         String description = teamsList.get(position).getDescription();
         holder.card_description.setText(description);
 
-        String id = teamsList.get(position).getId();
+        String photoUri = teamsList.get(position).getPhotoUri();
+        holder.card_logo.setImageBitmap(FileRequest.getTeamLogo(context, photoUri));
+
+        String teamId = teamsList.get(position).getId();
 
         holder.card_open_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(onTeamCardOpenButtonClickListener != null)
-                    onTeamCardOpenButtonClickListener.onCardItemClick(id);
+                    onTeamCardOpenButtonClickListener.onCardItemClick(teamId);
+            }
+        });
+
+        holder.card_3dots_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onTeamCardEditButtonClickListener != null)
+                    onTeamCardEditButtonClickListener.onCardItemClick(teamId);
             }
         });
     }
