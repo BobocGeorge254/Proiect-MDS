@@ -42,8 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2"
@@ -83,6 +82,13 @@
                 android:inputType="textCapSentences"
                 android:textColor="#FAF6F6" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/act_teams_fr_listing_create_team_card_upload_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload image"
+            android:layout_gravity="center"/>
 
     <LinearLayout
         android:id="@+id/createbuttons"
@@ -216,7 +222,8 @@
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="invisible">
 
         <Button
             android:id="@+id/act_teams_fr_listing_edit_window_delete_team_button"

@@ -28,12 +28,13 @@ import teams.DataTeamPostReply;
 
 public class TeamsRequests {
 
-    public static String createTeam(String teamName, String teamDescription, String userId) {
+    public static String createTeam(String teamName, String teamDescription, String photoUri, String userId) {
         CollectionReference teamsCollection = Manager.dbConnection.getDatabase().collection("Teams");
 
         Map<String, Object> team = new HashMap<>();
         team.put("name", teamName);
         team.put("description", teamDescription);
+        team.put("photo_uri", photoUri);
 
         Task<DocumentReference> addTeamTask = teamsCollection.add(team);
         while (!addTeamTask.isComplete()) {}
@@ -120,7 +121,8 @@ public class TeamsRequests {
 
                 String name = getTeamDetailsTask.getResult().get("name").toString();
                 String description = getTeamDetailsTask.getResult().get("description").toString();
-                teamsList.add(new DataTeamCard(id, name, description));
+                String photoUrl = getTeamDetailsTask.getResult().get("photo_uri").toString();
+                teamsList.add(new DataTeamCard(id, name, description, photoUrl));
             }
 
         return teamsList;
