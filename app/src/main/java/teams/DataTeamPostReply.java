@@ -8,14 +8,16 @@ public class DataTeamPostReply {
     private final String sendDate;
     private final String senderId;
     private final String teamPostId;
+    private final String teamId;
 
-    public DataTeamPostReply(String id, String senderName, String text, String sendDate, String senderId, String teamPostId) {
+    public DataTeamPostReply(String id, String senderName, String text, String sendDate, String senderId, String teamPostId, String teamId) {
         this.id = id;
         this.senderName = senderName;
         this.text = text;
         this.sendDate = sendDate;
         this.senderId = senderId;
         this.teamPostId = teamPostId;
+        this.teamId = teamId;
     }
 
     public String getId() {
@@ -40,5 +42,9 @@ public class DataTeamPostReply {
 
     public String getTeamPostId() {
         return teamPostId;
+    }
+
+    public String getTeamId() {
+        return teamId;
     }
 }

@@ -41,6 +41,10 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private Button act_teams_fr_listing_join_team_card_join_button;
     private Button act_teams_fr_listing_join_team_card_cancel_button;
     private EditText act_teams_fr_listing_join_team_card_ET;
+    private LinearLayout act_teams_fr_listing_edit_window;
+    private Button act_teams_fr_listing_edit_window_cancel_button;
+    private Button act_teams_fr_listing_edit_window_delete_team_button;
+    private Button act_teams_fr_listing_edit_window_leave_team_button;
     private View view;
     private AdapterTeams adapterTeams;
     private ArrayList<DataTeamCard> dataTeamCardList;
@@ -55,6 +59,7 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
 
         act_teams_fr_listing_create_team_window.setVisibility(View.INVISIBLE);
         act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
+        act_teams_fr_listing_edit_window.setVisibility(View.INVISIBLE);
 
         dataTeamCardList = TeamsRequests.getTeams(PreferencesManager.getUserId(getContext()));
         setTeamsAdapter();
@@ -76,6 +81,10 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_join_team_card_join_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_join_button);
         act_teams_fr_listing_join_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_cancel_button);
         act_teams_fr_listing_join_team_card_ET = view.findViewById(R.id.act_teams_fr_listing_join_team_card_ET);
+        act_teams_fr_listing_edit_window = view.findViewById(R.id.act_teams_fr_listing_edit_window);
+        act_teams_fr_listing_edit_window_cancel_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_cancel_button);
+        act_teams_fr_listing_edit_window_delete_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_delete_team_button);
+        act_teams_fr_listing_edit_window_leave_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_leave_team_button);
     }
 
     @Override
@@ -86,6 +95,9 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_create_team_card_create_button_onClick();
         act_teams_fr_listing_join_team_card_join_button_onClick();
         act_teams_fr_listing_join_team_card_cancel_button_onClick();
+        act_teams_fr_listing_edit_window_cancel_button_onClick();
+        act_teams_fr_listing_edit_window_delete_team_button_onClick();
+        act_teams_fr_listing_edit_window_leave_team_button_onClick();
     }
 
     private void act_teams_fr_listing_create_team_button_onClick() {
@@ -159,6 +171,47 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
+    private void act_teams_fr_listing_edit_window_cancel_button_onClick() {
+        act_teams_fr_listing_edit_window_cancel_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                act_teams_fr_listing_edit_window.setVisibility(View.INVISIBLE);
+                act_teams_fr_listing_create_team_button.setClickable(true);
+                act_teams_fr_listing_join_team_button.setClickable(true);
+            }
+        });
+    }
+
+    private void act_teams_fr_listing_edit_window_delete_team_button_onClick() {
+        act_teams_fr_listing_edit_window_delete_team_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String response = TeamsRequests.deleteTeam(PreferencesManager.getLastTeamPressedEditId(getContext()));
+
+                if(response.equals("Team deleted successfully")) {
+                    dataTeamCardList.clear();
+                    dataTeamCardList.addAll(TeamsRequests.getTeams(PreferencesManager.getUserId(getContext())));
+                    adapterTeams.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void act_teams_fr_listing_edit_window_leave_team_button_onClick() {
+        act_teams_fr_listing_edit_window_leave_team_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String response = TeamsRequests.deleteUserFromTeam(PreferencesManager.getUserId(getContext()), PreferencesManager.getLastTeamPressedEditId(getContext()));
+
+                if(response.equals("User removed from team successfully")) {
+                    dataTeamCardList.clear();
+                    dataTeamCardList.addAll(TeamsRequests.getTeams(PreferencesManager.getUserId(getContext())));
+                    adapterTeams.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
     private void setTeamsAdapter() {
         adapterTeams = new AdapterTeams(dataTeamCardList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -171,6 +224,23 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             public void onCardItemClick(String teamId) {
                 PreferencesManager.saveLastOpenedTeamId(getContext(), teamId);
                 setTeamPostsFragment();
+            }
+        });
+
+        adapterTeams.setOnTeamCardEditButtonClickListener(new OnTeamCardEditButtonClickListener() {
+            @Override
+            public void onCardItemClick(String teamId) {
+                PreferencesManager.saveLastTeamPressedEditId(getContext(), teamId);
+                String roleInTeam = TeamsRequests.getTeamRole(PreferencesManager.getUserId(getContext()), PreferencesManager.getLastTeamPressedEditId(getContext()));
+                if(roleInTeam.equals("Admin")) {
+                    act_teams_fr_listing_edit_window_delete_team_button.setEnabled(true);
+                } else {
+                    act_teams_fr_listing_edit_window_delete_team_button.setEnabled(false);
+                }
+
+                act_teams_fr_listing_edit_window.setVisibility(View.VISIBLE);
+                act_teams_fr_listing_create_team_button.setClickable(false);
+                act_teams_fr_listing_join_team_button.setClickable(false);
             }
         });
     }

@@ -193,12 +193,13 @@ public class TeamsRequests {
             for(DocumentSnapshot documentSnapshot : queryGetPostsTask.getResult().getDocuments()) {
                 String id = documentSnapshot.getId();
                 String senderId = documentSnapshot.getString("sender_id");
+                String teamId = documentSnapshot.getString("team_id");
                 String text = documentSnapshot.getString("text");
                 String sendDate = documentSnapshot.getString("date_posted");
                 String senderName = OtherRequests.getUsernameByUserId(senderId);
                 Timestamp timestamp = documentSnapshot.getTimestamp("timestamp");
 
-                postsMap.put(timestamp, new DataTeamPost(id, senderName, text, sendDate, senderId));
+                postsMap.put(timestamp, new DataTeamPost(id, senderName, text, sendDate, senderId, teamId));
             }
 
             ArrayList<Timestamp> timestampList = new ArrayList<>(postsMap.keySet());   //ordering posts by post time
@@ -270,12 +271,13 @@ public class TeamsRequests {
             for(DocumentSnapshot documentSnapshot : queryGetRepliesTask.getResult().getDocuments()) {
                 String id = documentSnapshot.getId();
                 String senderId = documentSnapshot.getString("sender_id");
+                String teamId = documentSnapshot.getString("team_id");
                 String text = documentSnapshot.getString("text");
                 String sendDate = documentSnapshot.getString("date_posted");
                 String senderName = OtherRequests.getUsernameByUserId(senderId);
                 Timestamp timestamp = documentSnapshot.getTimestamp("timestamp");
 
-                postsMap.put(timestamp, new DataTeamPostReply(id, senderName, text, sendDate, senderId, teamPostId));
+                postsMap.put(timestamp, new DataTeamPostReply(id, senderName, text, sendDate, senderId, teamPostId, teamId));
             }
 
             ArrayList<Timestamp> timestampList = new ArrayList<>(postsMap.keySet());   //ordering posts by post time
@@ -289,16 +291,49 @@ public class TeamsRequests {
         return repliesList;
     }
 
-    public static String deleteTeamPostReply(String teamPostReplyId) {
-        CollectionReference teams_postsRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts_Replies");
+    public static String deleteTeam(String teamId) {
+        CollectionReference teams_Collection = Manager.dbConnection.getDatabase().collection("Teams");
+        CollectionReference teams_postsCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts");
+        CollectionReference users_teamsCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
+        CollectionReference team_chanelRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
 
-        Task<Void> deletePostReplyTask = teams_postsRepliesCollection.document(teamPostReplyId).delete();
-        while (!deletePostReplyTask.isComplete()) {}
+        Query queryGetPosts = teams_postsCollection.whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> queryGetPostsTask = queryGetPosts.get();
 
-        if (deletePostReplyTask.isSuccessful())
-            return "Post reply deleted successfully";
+        while (!queryGetPostsTask.isComplete()) {}   //blocks until query is executed
 
-        return "Error deleting team post reply";
+        if(!queryGetPostsTask.getResult().isEmpty())
+            for(DocumentSnapshot documentSnapshot : queryGetPostsTask.getResult().getDocuments())  //deletes the posts of this team
+                deleteTeamPost(documentSnapshot.getId());
+
+        Task<Void> deleteTeamTask = teams_Collection.document(teamId).delete();
+        while (!deleteTeamTask.isComplete()) {}
+
+        if (deleteTeamTask.isSuccessful()) {   //now we delete the users_teams references and team chanels
+            Query queryGetUsersTeams = users_teamsCollection.whereEqualTo("team_id", teamId);
+            Task<QuerySnapshot> queryGetUsersTeamsTask = queryGetUsersTeams.get();
+
+            while (!queryGetUsersTeamsTask.isComplete()) {}   //blocks until query is executed
+
+            if(!queryGetUsersTeamsTask.getResult().isEmpty())
+                for(DocumentSnapshot documentSnapshot : queryGetUsersTeamsTask.getResult().getDocuments()) {
+                    String userToDeleteFromTeamId = documentSnapshot.getString("user_id");
+                    deleteUserFromTeam(userToDeleteFromTeamId, teamId);
+                }
+
+            Query queryGetTeamChanels = team_chanelRepliesCollection.whereEqualTo("team_id", teamId);  //now delete team chanels
+            Task<QuerySnapshot> getTeamsChanelsTask = queryGetTeamChanels.get();
+
+            while (!getTeamsChanelsTask.isComplete()) {}
+
+            if(!getTeamsChanelsTask.getResult().isEmpty()) {
+                for(DocumentSnapshot documentSnapshot : getTeamsChanelsTask.getResult())
+                    deleteTeamChanel(documentSnapshot.getId());
+            }
+        } else
+            return "Failed to delete team";
+
+        return "Team deleted successfully";
     }
 
     public static String deleteTeamPost(String teamPostId) {
@@ -321,5 +356,84 @@ public class TeamsRequests {
             return "Post deleted successfully";
 
         return "Error deleting post";
+    }
+
+    public static String deleteTeamPostReply(String teamPostReplyId) {
+        CollectionReference teams_postsRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Posts_Replies");
+
+        Task<Void> deletePostReplyTask = teams_postsRepliesCollection.document(teamPostReplyId).delete();
+        while (!deletePostReplyTask.isComplete()) {}
+
+        if (deletePostReplyTask.isSuccessful())
+            return "Post reply deleted successfully";
+
+        return "Error deleting team post reply";
+    }
+
+    public static String deleteUserFromTeam(String userId, String teamId) {
+        CollectionReference users_teamsRepliesCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
+
+        Query queryGetUsersTeams = users_teamsRepliesCollection.whereEqualTo("user_id", userId).whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> getUsersTeamsTask = queryGetUsersTeams.get();
+
+        while (!getUsersTeamsTask.isComplete()) {}
+
+        if(!getUsersTeamsTask.getResult().isEmpty()) {
+            Task<Void> deleteUserFromTeamTask = users_teamsRepliesCollection.document(getUsersTeamsTask.getResult().getDocuments().get(0).getId()).delete();
+            while (!deleteUserFromTeamTask.isComplete()) {}
+
+            if (deleteUserFromTeamTask.isSuccessful())
+                return "User removed from team successfully";
+        }
+
+        return "Error removing user from team";
+    }
+
+    public static String changeRoleInTeam(String userId, String teamId, String newRole) {
+        CollectionReference users_teamsRepliesCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
+
+        Query queryGetUsersTeams = users_teamsRepliesCollection.whereEqualTo("user_id", userId).whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> getUsersTeamsTask = queryGetUsersTeams.get();
+
+        while (!getUsersTeamsTask.isComplete()) {}
+
+        if(!getUsersTeamsTask.getResult().isEmpty()) {
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("role", newRole);
+
+            Task<Void> changeRoleTask = users_teamsRepliesCollection.document(getUsersTeamsTask.getResult().getDocuments().get(0).getId()).update(updates);
+            while (!changeRoleTask.isComplete()) {}
+
+            if(changeRoleTask.isSuccessful())
+                return "Changed team member role successfully";
+        }
+
+        return "Error changing team member role";
+    }
+
+    public static String deleteTeamChanel(String teamChanelId) {
+        CollectionReference teams_chanelRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
+
+        Task<Void> deleteChanelTask = teams_chanelRepliesCollection.document(teamChanelId).delete();
+        while (!deleteChanelTask.isComplete()) {}
+
+        if (deleteChanelTask.isSuccessful())
+            return "Chanel deleted successfully";
+
+        return "Error deleting chanel";
+    }
+
+    public static String getTeamRole(String userId, String teamId) {
+        CollectionReference users_teamsRepliesCollection = Manager.dbConnection.getDatabase().collection("Users_Teams");
+
+        Query queryGetUsersTeams = users_teamsRepliesCollection.whereEqualTo("user_id", userId).whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> queryGetUsersTeamsTask = queryGetUsersTeams.get();
+
+        while (!queryGetUsersTeamsTask.isComplete()) {}   //blocks until query is executed
+
+        if(!queryGetUsersTeamsTask.getResult().isEmpty())
+            return  queryGetUsersTeamsTask.getResult().getDocuments().get(0).get("role").toString();
+
+        return "Error checking team member role";
     }
 }

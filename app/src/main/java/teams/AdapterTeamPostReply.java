@@ -14,6 +14,9 @@ import com.example.register.R;
 
 import java.util.ArrayList;
 
+import database_connection.TeamsRequests;
+import others.PreferencesManager;
+
 public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostReply.MyViewHolder> {
 
     private final ArrayList<DataTeamPostReply> teamPostRepliesList;
@@ -72,6 +75,10 @@ public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostRe
                 onTeamPostReplyDeleteClickListener.onCardItemClick(teamPostId);
             }
         });
+
+        if(!(TeamsRequests.getTeamRole(PreferencesManager.getUserId(context), teamPostRepliesList.get(position).getTeamId()).equals("Admin") ||
+                teamPostRepliesList.get(position).getSenderId().equals(PreferencesManager.getUserId(context))))
+            holder.card_delete.setVisibility(View.INVISIBLE);
     }
 
     @Override
