@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,11 +33,10 @@ import others.PreferencesManager;
 
 public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
 
-    private TextView act_teams_fr_team_posts_team_id_TW;
-    private RecyclerView act_teams_fr_team_posts_chanels_listing_recycleview;
+    private TextView act_teams_fr_team_posts_team_name_TW;
     private RecyclerView act_teams_fr_team_posts_posts_listing_recycleview;
     private Button act_teams_fr_team_posts_add_chanel_button;
-    private Button act_teams_fr_team_posts_add_post_button;
+    private FrameLayout act_teams_fr_team_posts_add_post_button;
     private LinearLayout act_teams_fr_team_post_create_chanel_window;
     private EditText act_teams_fr_team_post_create_chanel_name_ET;
     private Button act_teams_fr_team_post_create_chanel_create_button;
@@ -50,10 +51,6 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
     private Button act_teams_fr_team_post_create_reply_cancel_button;
     private Button act_teams_fr_team_posts_files_button;
     private View view;
-
-    private AdapterTeamChanelName adapterTeamsChanelName;
-    private ArrayList<DataTeamChanelNameCard> dataTeamChanelNameCardList;
-
     private AdapterTeamPost adapterTeamsPosts;
     private ArrayList<DataTeamPost> dataTeamPostsList;
 
@@ -65,23 +62,19 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         getActivityElements();
         setListeners();
 
-        dataTeamChanelNameCardList = TeamsRequests.getTeamsChanels(PreferencesManager.getLastOpenedTeamId(getContext()));
-        PreferencesManager.saveLastOpenedTeamChanelId(getContext(), dataTeamChanelNameCardList.get(0).getId());
         dataTeamPostsList = TeamsRequests.getTeamsPosts(PreferencesManager.getLastOpenedTeamChanelId(getContext()));
-        setTeamsChanelNamesAdapter();
         setTeamsPostsAdapter();
 
         act_teams_fr_team_post_create_chanel_window.setVisibility(View.INVISIBLE);
         act_teams_fr_team_post_create_post_window.setVisibility(View.INVISIBLE);
         act_teams_fr_team_post_create_reply_window.setVisibility(View.INVISIBLE);
-
+        System.out.println();
         return view;
     }
 
 
     @Override
     public void getActivityElements() {
-        act_teams_fr_team_posts_chanels_listing_recycleview = view.findViewById(R.id.act_teams_fr_team_posts_chanels_listing_recycleview);
         act_teams_fr_team_posts_posts_listing_recycleview = view.findViewById(R.id.act_teams_fr_team_posts_posts_listing_recycleview);
         act_teams_fr_team_posts_add_chanel_button = view.findViewById(R.id.act_teams_fr_team_posts_add_chanel_button);
         act_teams_fr_team_posts_add_post_button = view.findViewById(R.id.act_teams_fr_team_posts_add_post_button);
@@ -100,8 +93,9 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_posts_files_button = view.findViewById(R.id.act_teams_fr_team_posts_files_button);
 
 
-        act_teams_fr_team_posts_team_id_TW = view.findViewById(R.id.act_teams_fr_team_posts_team_id_TW);
-        act_teams_fr_team_posts_team_id_TW.setText(PreferencesManager.getLastOpenedTeamId(getContext()));
+        act_teams_fr_team_posts_team_name_TW = view.findViewById(R.id.act_teams_fr_team_posts_team_name_TW);
+        String teamName = TeamsRequests.getTeamData(PreferencesManager.getLastOpenedTeamId(getContext())).getName();
+        act_teams_fr_team_posts_team_name_TW.setText(teamName);
     }
 
     @Override
@@ -134,8 +128,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
                 String response = TeamsRequests.addChanel(PreferencesManager.getLastOpenedTeamId(getContext()), name);
 
                 if(!response.equals("Error adding chanel")) {
-                    dataTeamChanelNameCardList.add(new DataTeamChanelNameCard(response, name));
-                    adapterTeamsChanelName.notifyItemInserted(dataTeamChanelNameCardList.size() - 1);
+                    //TODO
                 }
             }
         });
@@ -215,24 +208,6 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 setTeamFilesListingFragment();
-            }
-        });
-    }
-
-    private void setTeamsChanelNamesAdapter() {
-        adapterTeamsChanelName = new AdapterTeamChanelName(dataTeamChanelNameCardList, getContext());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        act_teams_fr_team_posts_chanels_listing_recycleview.setLayoutManager(layoutManager);
-        act_teams_fr_team_posts_chanels_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
-        act_teams_fr_team_posts_chanels_listing_recycleview.setAdapter(adapterTeamsChanelName);
-
-        adapterTeamsChanelName.setOnTeamChanelCardClickListener(new OnTeamChanelCardClickListener() {
-            @Override
-            public void onCardItemClick(String teamChanelId) {
-                PreferencesManager.saveLastOpenedTeamChanelId(getContext(), teamChanelId);
-                dataTeamPostsList.clear();
-                dataTeamPostsList.addAll(TeamsRequests.getTeamsPosts(teamChanelId));
-                adapterTeamsPosts.notifyDataSetChanged();
             }
         });
     }

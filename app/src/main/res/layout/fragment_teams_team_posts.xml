@@ -4,50 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="teams.FragmentTeamsTeamPosts">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/act_teams_fr_team_posts_team_name_TW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Team Post"
+        android:text="Algoritmi avansati"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="@color/grey_1"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/act_teams_fr_team_posts_team_id_TW"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Id"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/act_teams_fr_team_posts_chanels_listing_recycleview"
-        android:layout_width="150dp"
-        android:layout_height="0dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_team_posts_add_chanel_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_team_posts_team_id_TW" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/act_teams_fr_team_posts_posts_listing_recycleview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_team_posts_add_chanel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/act_teams_fr_team_posts_chanels_listing_recycleview"
-        app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_team_posts_team_id_TW" />
 
 
     <LinearLayout
@@ -79,7 +50,14 @@
                 android:hint="chanel name..."
                 android:inputType="textCapSentences"
                 android:textColor="#FAF6F6" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/act_teams_fr_team_posts_posts_listing_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:spinnerMode="dropdown" />
 
         <LinearLayout
             android:id="@+id/joinbuttonslayout"
@@ -260,15 +238,27 @@
     </LinearLayout>
 
 
-    <Button
+    <FrameLayout
         android:id="@+id/act_teams_fr_team_posts_add_post_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="Add Post"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/add_post_button_background"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/buttt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/write_post"
+            app:tint="@color/white" />
+
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/act_teams_fr_team_posts_files_button"
@@ -278,7 +268,6 @@
         android:layout_weight="1"
         android:text="Files"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/act_teams_fr_team_posts_add_post_button"
         app:layout_constraintStart_toEndOf="@+id/act_teams_fr_team_posts_add_chanel_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

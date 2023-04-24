@@ -270,10 +270,9 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_recycleview.setItemAnimator(new DefaultItemAnimator());
         act_teams_fr_listing_recycleview.setAdapter(adapterTeams);
 
-        adapterTeams.setOnTeamCardOpenButtonClickListener(new OnTeamCardOpenButtonClickListener() {
+        adapterTeams.setOnTeamChanelCardClickListener(new OnTeamChanelCardClickListener() {
             @Override
-            public void onCardItemClick(String teamId) {
-                PreferencesManager.saveLastOpenedTeamId(getContext(), teamId);
+            public void onCardItemClick(String teamChanelId) {
                 setTeamPostsFragment();
             }
         });
