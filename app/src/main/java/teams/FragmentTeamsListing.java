@@ -298,6 +298,16 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
+    private void setCreateTeamUploadImageFileExplorer() {
+        createTeamUploadImageFileExplorer = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri uri) {
+                PreferencesManager.saveLastURISelected(getContext(), uri);
+                selectedImageThisTime = true;
+            }
+        });
+    }
+
     private void setTeamPostsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -310,15 +320,5 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsEditTeam());
         fragmentTransaction.commit();
-    }
-
-    private void setCreateTeamUploadImageFileExplorer() {
-        createTeamUploadImageFileExplorer = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri uri) {
-                PreferencesManager.saveLastURISelected(getContext(), uri);
-                selectedImageThisTime = true;
-            }
-        });
     }
 }
