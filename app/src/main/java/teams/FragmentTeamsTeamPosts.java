@@ -3,6 +3,8 @@ package teams;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +48,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
     private EditText act_teams_fr_team_post_create_reply_text_ET;
     private Button act_teams_fr_team_post_create_reply_create_button;
     private Button act_teams_fr_team_post_create_reply_cancel_button;
+    private Button act_teams_fr_team_posts_files_button;
     private View view;
 
     private AdapterTeamChanelName adapterTeamsChanelName;
@@ -94,6 +97,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_post_create_reply_text_ET = view.findViewById(R.id.act_teams_fr_team_post_create_reply_text_ET);
         act_teams_fr_team_post_create_reply_create_button = view.findViewById(R.id.act_teams_fr_team_post_create_reply_create_button);
         act_teams_fr_team_post_create_reply_cancel_button = view.findViewById(R.id.act_teams_fr_team_post_create_reply_cancel_button);
+        act_teams_fr_team_posts_files_button = view.findViewById(R.id.act_teams_fr_team_posts_files_button);
 
 
         act_teams_fr_team_posts_team_id_TW = view.findViewById(R.id.act_teams_fr_team_posts_team_id_TW);
@@ -110,6 +114,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         act_teams_fr_team_post_create_post_cancel_button_onClick();
         act_teams_fr_team_post_create_reply_create_button_onClick();
         act_teams_fr_team_post_create_reply_cancel_button_onClick();
+        act_teams_fr_team_posts_files_button_onClick();
     }
 
     private void act_teams_fr_team_posts_add_chanel_button_onClick() {
@@ -205,6 +210,15 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
         });
     }
 
+    private void act_teams_fr_team_posts_files_button_onClick() {
+        act_teams_fr_team_posts_files_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTeamFilesListingFragment();
+            }
+        });
+    }
+
     private void setTeamsChanelNamesAdapter() {
         adapterTeamsChanelName = new AdapterTeamChanelName(dataTeamChanelNameCardList, getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -251,5 +265,12 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
                 }
             }
         });
+    }
+
+    private void setTeamFilesListingFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsFilesList());
+        fragmentTransaction.commit();
     }
 }

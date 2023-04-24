@@ -1,6 +1,9 @@
 package database_connection;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +11,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
+
+import androidx.core.content.FileProvider;
 
 import com.example.register.R;
 import com.google.android.gms.tasks.Task;
@@ -68,6 +74,58 @@ public class FileRequest {
 
         return BitmapFactory.decodeResource(context.getResources(), R.drawable.placeholder);
     }
+
+    public static String uploadTeamsFile(Context context, Uri uri) {
+        String path = "team_file/" + UUID.randomUUID();
+        StorageReference storageReference = Manager.dbConnection.getStorage().getReference().child(path);
+
+        byte[] data;
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            data = getBytesFromInputStream(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Failed to upload team file";
+        }
+
+        UploadTask uploadTask = storageReference.putBytes(data);
+
+        while (!uploadTask.isComplete()) {
+        }
+
+        return path;
+    }
+
+    public static String downloadFile(Context context, Uri uri) {
+        StorageReference storageReference = Manager.dbConnection.getStorage().getReference().child(uri.toString());
+
+        try {
+            File localFile = File.createTempFile("file", "");
+            FileDownloadTask downloadTask = storageReference.getFile(localFile);
+
+            while (!downloadTask.isComplete()) {
+            }
+
+            if(downloadTask.isSuccessful()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri newUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", localFile);
+                intent.setDataAndType(newUri, "*/*");
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                context.startActivity(intent);
+
+                return "File downloaded successfully";
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "Failed to download file";
+    }
+
+
+
+
 
     public static String deleteFile(String path) {
         if(path.equals("default.png"))

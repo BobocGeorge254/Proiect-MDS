@@ -24,6 +24,7 @@ import java.util.Map;
 import others.Manager;
 import teams.DataTeamCard;
 import teams.DataTeamChanelNameCard;
+import teams.DataTeamFile;
 import teams.DataTeamPost;
 import teams.DataTeamPostReply;
 
@@ -473,5 +474,57 @@ public class TeamsRequests {
             return "Updated team successfully";
 
         return "Error updating team";
+    }
+
+    public static String addTeamFile(String fileName, String uri, String team_id) {
+        CollectionReference teams_filesCollection = Manager.dbConnection.getDatabase().collection("Teams_Files");
+
+        Map<String, Object> post = new HashMap<>();
+        post.put("name", fileName);
+        post.put("uri", uri);
+        post.put("team_id", team_id);
+
+        Task<DocumentReference> addFileTask = teams_filesCollection.add(post);
+        while (!addFileTask.isComplete()) {}
+
+        if (addFileTask.isSuccessful())
+            return addFileTask.getResult().getId();
+
+        return "Error adding team file";
+    }
+
+    public static ArrayList<DataTeamFile> getTeamsFilesData(String teamId) {
+        CollectionReference teams_filesCollection = Manager.dbConnection.getDatabase().collection("Teams_Files");
+
+        Query queryGetFiles = teams_filesCollection.whereEqualTo("team_id", teamId);
+        Task<QuerySnapshot> queryGetFilesTask = queryGetFiles.get();
+
+        while (!queryGetFilesTask.isComplete()) {
+        }   //blocks until query is executed
+
+        ArrayList<DataTeamFile> filesList = new ArrayList<>();
+
+        if (!queryGetFilesTask.getResult().isEmpty())
+            for(DocumentSnapshot documentSnapshot : queryGetFilesTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getId();
+                String name = documentSnapshot.getString("name");
+                String uri = documentSnapshot.getString("uri");
+
+                filesList.add(new DataTeamFile(id, uri, name, teamId));
+        }
+
+        return filesList;
+    }
+
+    public static String deleteTeamFile(String teamFileId) {
+        CollectionReference teams_filesRepliesCollection = Manager.dbConnection.getDatabase().collection("Teams_Files");
+
+        Task<Void> deleteFileTask = teams_filesRepliesCollection.document(teamFileId).delete();
+        while (!deleteFileTask.isComplete()) {}
+
+        if (deleteFileTask.isSuccessful())
+            return "File deleted successfully";
+
+        return "Error deleting file";
     }
 }
