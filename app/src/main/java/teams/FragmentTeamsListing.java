@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.register.FragmentTeamCreateTeam;
 import com.example.register.R;
@@ -45,8 +46,8 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private LinearLayout act_teams_fr_listing_create_team_button;
     private LinearLayout act_teams_fr_listing_join_team_button;
     private LinearLayout act_teams_fr_listing_join_team_window;
-    private Button act_teams_fr_listing_join_team_card_join_button;
-    private Button act_teams_fr_listing_join_team_card_cancel_button;
+    private TextView act_teams_fr_listing_join_team_card_join_button;
+    private TextView act_teams_fr_listing_join_team_card_cancel_button;
     private EditText act_teams_fr_listing_join_team_card_ET;
     private LinearLayout act_teams_fr_listing_edit_window;
     private Button act_teams_fr_listing_edit_window_cancel_button;
