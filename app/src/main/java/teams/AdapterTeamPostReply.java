@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +39,7 @@ public class AdapterTeamPostReply extends RecyclerView.Adapter<AdapterTeamPostRe
         private final TextView card_sender_name;
         private final TextView card_send_date;
         private final TextView card_text;
-        private final Button card_delete;
+        private final ImageButton card_delete;
 
         public MyViewHolder(final View view) {
             super(view);

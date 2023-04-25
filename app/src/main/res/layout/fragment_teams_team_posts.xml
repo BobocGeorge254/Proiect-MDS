@@ -20,18 +20,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/act_teams_fr_team_posts_posts_listing_recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_team_posts_files_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_team_posts_team_name_TW" />
+
 
     <LinearLayout
         android:id="@+id/act_teams_fr_team_post_create_chanel_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#03a1fc"
-        tools:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_team_posts_files_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_team_posts_team_name_TW">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
@@ -53,18 +62,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/act_teams_fr_team_posts_posts_listing_recycleview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:spinnerMode="dropdown" />
-
         <LinearLayout
             android:id="@+id/joinbuttonslayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="#03a1fc"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -177,11 +180,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#03a1fc"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout2323"

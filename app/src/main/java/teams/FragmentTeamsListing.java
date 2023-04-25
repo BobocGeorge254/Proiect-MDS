@@ -22,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.register.FragmentTeamCreateTeam;
 import com.example.register.R;
 
 import java.io.File;
@@ -40,14 +42,8 @@ import others.PreferencesManager;
 public class FragmentTeamsListing extends Fragment implements ActivityBasics {
 
     private RecyclerView act_teams_fr_listing_recycleview;
-    private LinearLayout act_teams_fr_listing_create_team_window;
-    private Button act_teams_fr_listing_create_team_button;
-    private Button act_teams_fr_listing_join_team_button;
-    private EditText act_teams_fr_listing_create_team_card_name;
-    private EditText act_teams_fr_listing_create_team_card_description;
-    private Button act_teams_fr_listing_create_team_card_upload_image_button;
-    private Button act_teams_fr_listing_create_team_card_create_button;
-    private Button act_teams_fr_listing_create_team_card_cancel_button;
+    private LinearLayout act_teams_fr_listing_create_team_button;
+    private LinearLayout act_teams_fr_listing_join_team_button;
     private LinearLayout act_teams_fr_listing_join_team_window;
     private Button act_teams_fr_listing_join_team_card_join_button;
     private Button act_teams_fr_listing_join_team_card_cancel_button;
@@ -57,11 +53,11 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     private Button act_teams_fr_listing_edit_window_delete_team_button;
     private Button act_teams_fr_listing_edit_window_edit_team_button;
     private Button act_teams_fr_listing_edit_window_leave_team_button;
+    private LinearLayout act_teams_fr_listing_manage_window;
+    private ImageButton act_teams_fr_listing_3dots_manage_imageButton;
     private View view;
     private AdapterTeams adapterTeams;
     private ArrayList<DataTeamCard> dataTeamCardList;
-    private ActivityResultLauncher<String> createTeamUploadImageFileExplorer;
-    private boolean selectedImageThisTime = false;   //used to check if we selected an image this time when we opened the create team window
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,14 +67,12 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         getActivityElements();
         setListeners();
 
-        act_teams_fr_listing_create_team_window.setVisibility(View.INVISIBLE);
         act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
         act_teams_fr_listing_edit_window.setVisibility(View.INVISIBLE);
+        act_teams_fr_listing_manage_window.setVisibility(View.INVISIBLE);
 
         dataTeamCardList = TeamsRequests.getTeams(PreferencesManager.getUserId(getContext()));
         setTeamsAdapter();
-
-        setCreateTeamUploadImageFileExplorer();
 
         return view;
     }
@@ -86,13 +80,8 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
     @Override
     public void getActivityElements() {
         act_teams_fr_listing_recycleview = view.findViewById(R.id.act_teams_fr_listing_recycleview);
-        act_teams_fr_listing_create_team_window = view.findViewById(R.id.act_teams_fr_listing_create_team_window);
         act_teams_fr_listing_create_team_button = view.findViewById(R.id.act_teams_fr_listing_create_team_button);
         act_teams_fr_listing_join_team_button = view.findViewById(R.id.act_teams_fr_listing_join_team_button);
-        act_teams_fr_listing_create_team_card_name = view.findViewById(R.id.act_teams_fr_listing_create_team_card_name);
-        act_teams_fr_listing_create_team_card_description = view.findViewById(R.id.act_teams_fr_listing_create_team_card_description);
-        act_teams_fr_listing_create_team_card_create_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_create_button);
-        act_teams_fr_listing_create_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_cancel_button);
         act_teams_fr_listing_join_team_window = view.findViewById(R.id.act_teams_fr_listing_join_team_window);
         act_teams_fr_listing_join_team_card_join_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_join_button);
         act_teams_fr_listing_join_team_card_cancel_button = view.findViewById(R.id.act_teams_fr_listing_join_team_card_cancel_button);
@@ -101,30 +90,41 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         act_teams_fr_listing_edit_window_cancel_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_cancel_button);
         act_teams_fr_listing_edit_window_delete_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_delete_team_button);
         act_teams_fr_listing_edit_window_leave_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_leave_team_button);
-        act_teams_fr_listing_create_team_card_upload_image_button = view.findViewById(R.id.act_teams_fr_listing_create_team_card_upload_image_button);
         act_teams_fr_listing_edit_window_edit_team_button = view.findViewById(R.id.act_teams_fr_listing_edit_window_edit_team_button);
+        act_teams_fr_listing_manage_window = view.findViewById(R.id.act_teams_fr_listing_manage_window);
+        act_teams_fr_listing_3dots_manage_imageButton = view.findViewById(R.id.act_teams_fr_listing_3dots_manage_imageButton);
     }
 
     @Override
     public void setListeners() {
         act_teams_fr_listing_create_team_button_onClick();
         act_teams_fr_listing_join_team_button_onClick();
-        act_teams_fr_listing_create_team_card_cancel_button_onClick();
-        act_teams_fr_listing_create_team_card_create_button_onClick();
         act_teams_fr_listing_join_team_card_join_button_onClick();
         act_teams_fr_listing_join_team_card_cancel_button_onClick();
         act_teams_fr_listing_edit_window_cancel_button_onClick();
         act_teams_fr_listing_edit_window_delete_team_button_onClick();
         act_teams_fr_listing_edit_window_leave_team_button_onClick();
-        act_teams_fr_listing_create_team_card_upload_image_button_onClick();
         act_teams_fr_listing_edit_window_edit_team_button_onClick();
+        act_teams_fr_listing_3dots_manage_imageButton_onClick();
+    }
+
+    private void act_teams_fr_listing_3dots_manage_imageButton_onClick() {
+        act_teams_fr_listing_3dots_manage_imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(act_teams_fr_listing_manage_window.getVisibility() == View.INVISIBLE)
+                    act_teams_fr_listing_manage_window.setVisibility(View.VISIBLE);
+                else
+                    act_teams_fr_listing_manage_window.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void act_teams_fr_listing_create_team_button_onClick() {
         act_teams_fr_listing_create_team_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                act_teams_fr_listing_create_team_window.setVisibility(View.VISIBLE);
+                setCreateTeamFragment();
             }
         });
     }
@@ -134,54 +134,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 act_teams_fr_listing_join_team_window.setVisibility(View.VISIBLE);
-            }
-        });
-    }
-
-    private void act_teams_fr_listing_create_team_card_upload_image_button_onClick() {
-        act_teams_fr_listing_create_team_card_upload_image_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               createTeamUploadImageFileExplorer.launch("image/*");
-            }
-        });
-    }
-
-    private void act_teams_fr_listing_create_team_card_cancel_button_onClick() {
-        act_teams_fr_listing_create_team_card_cancel_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                act_teams_fr_listing_create_team_window.setVisibility(View.INVISIBLE);
-                selectedImageThisTime = false;
-            }
-        });
-    }
-
-    private void act_teams_fr_listing_create_team_card_create_button_onClick() {
-        act_teams_fr_listing_create_team_card_create_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String uploadLogoResponse = "No image selected";
-                String photoUri = "";
-
-                if(selectedImageThisTime)
-                    uploadLogoResponse = FileRequest.uploadTeamLogo(getContext(), PreferencesManager.getLastURISelected(getContext()));
-
-                String teamName = act_teams_fr_listing_create_team_card_name.getText().toString().trim();
-                String teamDescription = act_teams_fr_listing_create_team_card_description.getText().toString().trim();
-
-                if(!(uploadLogoResponse.equals("No image selected") || uploadLogoResponse.equals("Failed to upload team image")))
-                    photoUri = uploadLogoResponse;
-                else
-                    photoUri = "default.png";
-
-                String response = TeamsRequests.createTeam(teamName, teamDescription, photoUri, PreferencesManager.getUserId(getContext()));
-                System.out.println(response);
-
-                if (!response.equals("Error adding team")) {
-                    dataTeamCardList.add(new DataTeamCard(response, teamName, teamDescription, photoUri));
-                    adapterTeams.notifyItemInserted(dataTeamCardList.size() - 1);
-                }
             }
         });
     }
@@ -297,16 +249,6 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         });
     }
 
-    private void setCreateTeamUploadImageFileExplorer() {
-        createTeamUploadImageFileExplorer = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-            @Override
-            public void onActivityResult(Uri uri) {
-                PreferencesManager.saveLastURISelected(getContext(), uri);
-                selectedImageThisTime = true;
-            }
-        });
-    }
-
     private void setTeamPostsFragment() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -318,6 +260,13 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsEditTeam());
+        fragmentTransaction.commit();
+    }
+
+    private void setCreateTeamFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamCreateTeam());
         fragmentTransaction.commit();
     }
 }
