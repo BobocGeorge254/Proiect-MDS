@@ -1,5 +1,7 @@
 package teams;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -15,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.register.R;
 
@@ -22,15 +28,17 @@ import database_connection.FileRequest;
 import database_connection.TeamsRequests;
 import interfaces.ActivityBasics;
 import others.PreferencesManager;
+import others.Utils;
 
 public class FragmentTeamsEditTeam extends Fragment implements ActivityBasics {
 
     private View view;
     private EditText act_teams_fr_edit_team_name_ET;
     private EditText act_teams_fr_edit_team_description_ET;
-    private Button act_teams_fr_edit_team_upload_image_button;
-    private Button act_teams_fr_edit_team_update_button;
-    private Button act_teams_fr_edit_team_back_button;
+    private LinearLayout act_teams_fr_edit_team_upload_image_button;
+    private ImageView act_teams_fr_edit_team_team_imageView;
+    private FrameLayout act_teams_fr_edit_team_update_button;
+    private FrameLayout act_teams_fr_edit_team_back_button;
     private DataTeamCard initialData;
 
     private ActivityResultLauncher<String> updateTeamUploadImageFileExplorer;
@@ -57,6 +65,7 @@ public class FragmentTeamsEditTeam extends Fragment implements ActivityBasics {
         act_teams_fr_edit_team_upload_image_button = view.findViewById(R.id.act_teams_fr_edit_team_upload_image_button);
         act_teams_fr_edit_team_update_button = view.findViewById(R.id.act_teams_fr_edit_team_update_button);
         act_teams_fr_edit_team_back_button = view.findViewById(R.id.act_teams_fr_edit_team_back_button);
+        act_teams_fr_edit_team_team_imageView = view.findViewById(R.id.act_teams_fr_edit_team_team_imageView);
     }
 
     @Override
@@ -118,6 +127,10 @@ public class FragmentTeamsEditTeam extends Fragment implements ActivityBasics {
             public void onActivityResult(Uri uri) {
                 PreferencesManager.saveLastURISelected(getContext(), uri);
                 selectedNewImage = true;
+
+                Bitmap bitmap = Utils.transformUriToBitmap(getContext(), uri);
+                if(bitmap.getHeight() != 0)
+                    act_teams_fr_edit_team_team_imageView.setImageBitmap(bitmap);
             }
         });
     }
@@ -126,6 +139,7 @@ public class FragmentTeamsEditTeam extends Fragment implements ActivityBasics {
         initialData = TeamsRequests.getTeamData(PreferencesManager.getLastTeamPressedEditId(getContext()));
         act_teams_fr_edit_team_name_ET.setText(initialData.getName());
         act_teams_fr_edit_team_description_ET.setText(initialData.getDescription());
+        act_teams_fr_edit_team_team_imageView.setImageBitmap(FileRequest.getTeamLogo(getContext(), initialData.getPhotoUri()));
     }
 
     private void setTeamsListingFragment() {

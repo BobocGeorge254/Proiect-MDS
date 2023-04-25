@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,7 +54,7 @@ public class AdapterTeamPost extends RecyclerView.Adapter<AdapterTeamPost.MyView
         private final TextView card_show_replies;
         private final TextView card_create_reply;
         private final RecyclerView card_replies_recycleview;
-        private final Button card_delete_button;
+        private final ImageButton card_delete_button;
 
         private final ArrayList<DataTeamPostReply> dataTeamPostsRepliesList;
         private AdapterTeamPostReply adapterTeamsPostsReplies;

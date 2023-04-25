@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="#fffeb8">
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,11 +20,21 @@
             android:orientation="horizontal"
             android:gravity="center">
 
+            <ImageButton
+                android:id="@+id/card_team_dropdown_imageButton"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/dropdown_button"
+                app:tint="@color/white"
+                android:background="@null"/>
+
             <ImageView
                 android:id="@+id/card_team_logo_imageView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@color/white"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/placeholder" />
 
             <TextView
@@ -34,39 +43,28 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="FLP"
-                android:textColor="#000000"
-                android:textSize="15sp"
+                android:text="Programare Avansata"
+                android:textColor="@color/grey_1"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:textAlignment="center"/>
+                android:textAlignment="textStart"/>
 
             <ImageButton
                 android:id="@+id/card_team_3dots_imageButton"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/vertical_dots"
-                android:layout_gravity="center"/>
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/dots"
+                android:background="@null"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/card_team_description_TW"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/card_team_chanels_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="Jale"
-            android:textColor="#939292"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-
-        <Button
-            android:id="@+id/card_team_open_button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Open"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:layout_gravity="center"
+            android:spinnerMode="dropdown" />
 
     </LinearLayout>
 

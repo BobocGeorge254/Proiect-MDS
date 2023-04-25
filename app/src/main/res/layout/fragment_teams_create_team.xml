@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="teams.FragmentTeamsEditTeam"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FragmentTeamCreateTeam"
     android:background="@color/black">
 
     <LinearLayout
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/act_teams_fr_edit_team_back_button"
+            android:id="@+id/act_teams_fr_listing_create_team_card_back_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="10dp">
@@ -36,17 +36,14 @@
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:text="Edit team"
+            android:layout_weight="1"
+            android:text="Create team"
             android:textColor="@color/white"
-            android:textSize="25dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="25dp" />
 
         <FrameLayout
-            android:id="@+id/act_teams_fr_edit_team_update_button"
+            android:id="@+id/act_teams_fr_listing_create_team_card_create_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="10dp"
@@ -84,7 +81,7 @@
             app:boxBackgroundMode="none">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/act_teams_fr_edit_team_name_ET"
+                android:id="@+id/act_teams_fr_listing_create_team_card_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black"
@@ -114,7 +111,7 @@
             app:boxBackgroundMode="none">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/act_teams_fr_edit_team_description_ET"
+                android:id="@+id/act_teams_fr_listing_create_team_card_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black"
@@ -136,13 +133,13 @@
             android:layout_height="30dp"></Space>
 
         <LinearLayout
-            android:id="@+id/act_teams_fr_edit_team_upload_image_button"
+            android:id="@+id/act_teams_fr_listing_create_team_card_upload_image_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/act_teams_fr_edit_team_team_imageView"
+                android:id="@+id/act_teams_fr_listing_create_team_card_team_imageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginLeft="10dp"
@@ -156,7 +153,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_marginLeft="10dp"
-                android:text="Change team picture"
+                android:text="Choose team picture"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 

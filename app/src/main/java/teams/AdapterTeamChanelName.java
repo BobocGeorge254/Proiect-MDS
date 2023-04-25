@@ -53,14 +53,13 @@ public class AdapterTeamChanelName extends RecyclerView.Adapter<AdapterTeamChane
         String name = teamChanelNameList.get(position).getName();
         holder.card_name.setText(name);
 
-        String id = teamChanelNameList.get(position).getId();
+        String teamChanel = teamChanelNameList.get(position).getId();
 
         holder.card_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println(id);
                 if(onTeamChanelCardClickListener != null)
-                    onTeamChanelCardClickListener.onCardItemClick(id);
+                    onTeamChanelCardClickListener.onCardItemClick(teamChanel);
             }
         });
     }
