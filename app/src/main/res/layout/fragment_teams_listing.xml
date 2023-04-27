@@ -208,6 +208,33 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_manage_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cann"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/cancel"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/canscel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -215,45 +242,119 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:elevation="2dp"
-        android:background="@color/black"
+        android:background="@color/grey_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="invisible">
 
-        <Button
+        <LinearLayout
             android:id="@+id/act_teams_fr_listing_edit_window_delete_team_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Delete team"
-            android:textColor="#ff0f2b"/>
+            android:orientation="horizontal">
 
-        <Button
+            <ImageView
+                android:id="@+id/asddsasdd"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/trash"
+                app:tint="@color/red_1"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/defl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Delete team"
+                android:textColor="@color/red_1"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/act_teams_fr_listing_edit_window_edit_team_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Edit team"/>
+            android:orientation="horizontal">
 
-        <Button
+            <ImageView
+                android:id="@+id/edd"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/edit"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Edit team"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/act_teams_fr_listing_edit_window_leave_team_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Leave team"/>
+            android:orientation="horizontal">
 
-        <Button
+            <ImageView
+                android:id="@+id/lv"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/leave"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/leave"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Leave team"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/act_teams_fr_listing_edit_window_cancel_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:text="Cancel edits" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cn"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/cancel"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

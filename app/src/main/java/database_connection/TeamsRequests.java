@@ -149,7 +149,7 @@ public class TeamsRequests {
                 String name = documentSnapshot.getString("name");
                 Timestamp timestamp = documentSnapshot.getTimestamp("timestamp");
 
-                chanelsMap.put(timestamp, new DataTeamChanelNameCard(id, name));
+                chanelsMap.put(timestamp, new DataTeamChanelNameCard(id, name, teamId));
             }
 
             ArrayList<Timestamp> timestampList = new ArrayList<>(chanelsMap.keySet());   //ordering teams by creating time
@@ -457,6 +457,19 @@ public class TeamsRequests {
         String photoUrl = getTeamDetailsTask.getResult().get("photo_uri").toString();
 
         return new DataTeamCard(teamId, name, description, photoUrl);
+    }
+
+    public static DataTeamChanelNameCard getTeamChanelData(String teamChanelId) {
+        CollectionReference teams_chanelsCollection = Manager.dbConnection.getDatabase().collection("Teams_Chanels");
+
+        Task<DocumentSnapshot> getChanelDetailsTask = teams_chanelsCollection.document(teamChanelId).get();
+
+        while (!getChanelDetailsTask.isComplete()) {}  //blocks until query is executed
+
+        String name = getChanelDetailsTask.getResult().get("name").toString();
+        String teamId = getChanelDetailsTask.getResult().get("team_id").toString();
+
+        return new DataTeamChanelNameCard(teamChanelId, name, teamId);
     }
 
     public static String updateTeam(String teamId, String updatedTeamName, String updatedTeamDescription, String updatedPhotoUri) {

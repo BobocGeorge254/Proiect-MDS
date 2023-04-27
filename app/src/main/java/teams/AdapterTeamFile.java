@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,7 +35,7 @@ public class AdapterTeamFile extends RecyclerView.Adapter<AdapterTeamFile.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView card_name;
-        private final Button card_delete;
+        private final ImageButton card_delete;
 
         public MyViewHolder(final View view) {
             super(view);
