@@ -1,5 +1,6 @@
 package teams;
 
-public interface OnTeamCardOpenButtonClickListener {
+public interface OnTeamCardEditButtonClickListener {
+
     void onCardItemClick(String teamId);
 }

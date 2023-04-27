@@ -2,141 +2,87 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/chat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
+    android:background="@color/black"
     tools:context="teams.FragmentTeamsListing">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Teams Listing"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/teamsTW"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Teams"
+            android:textColor="@color/grey_1"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/act_teams_fr_listing_3dots_manage_imageButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/dots"
+            android:background="@null"/>
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/act_teams_fr_listing_recycleview"
-        android:layout_width="379dp"
-        android:layout_height="419dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_listing_join_team_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <LinearLayout
-        android:id="@+id/act_teams_fr_listing_create_team_window"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#03a1fc"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#CBB5FD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/act_teams_fr_listing_create_team_card_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:hint="team name..."
-                android:inputType="textCapSentences"
-                android:textColor="#FAF6F6" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:textColorHint="#CBB5FD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_listing_create_team_card_name">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/act_teams_fr_listing_create_team_card_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:hint="team description..."
-                android:inputType="textCapSentences"
-                android:textColor="#FAF6F6" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/createbuttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#03a1fc"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/act_teams_fr_listing_create_team_card_create_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Create"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <Button
-                android:id="@+id/act_teams_fr_listing_create_team_card_cancel_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Cancel"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/act_teams_fr_listing_join_team_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#03a1fc"
+        android:layout_marginHorizontal="10dp"
         android:orientation="vertical"
+        android:background="@color/grey_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/joinwithcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Join a team with a code"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+
+            android:textAlignment="textStart"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#CBB5FD"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Enter code"
+            android:textColorHint="@color/grey_1"
+            app:boxBackgroundMode="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -145,90 +91,270 @@
                 android:id="@+id/act_teams_fr_listing_join_team_card_ET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:hint="team code..."
+                android:background="@color/grey_2"
                 android:inputType="textCapSentences"
-                android:textColor="#FAF6F6" />
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/purple_2" />
 
         <LinearLayout
             android:id="@+id/joinbuttonslayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#03a1fc"
             android:orientation="horizontal"
+            android:gravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/act_teams_fr_listing_join_team_card_join_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/act_teams_fr_listing_join_team_card_cancel_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Join"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Cancel"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/act_teams_fr_listing_join_team_card_cancel_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/act_teams_fr_listing_join_team_card_join_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Cancel"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Join"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/act_teams_fr_listing_join_team_button"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/act_teams_fr_listing_manage_window"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="Join Team"
-        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_listing_create_team_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/act_teams_fr_listing_create_team_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="Create Team"
+        android:orientation="vertical"
+        android:background="@color/grey_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-<!--    <Button-->
-<!--        android:id="@+id/act_teams_fr_messages_button"-->
-<!--        android:layout_width="107dp"-->
-<!--        android:layout_height="57dp"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:text="Chat"-->
-<!--        app:layout_constraintLeft_toRightOf="@+id/textView4"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"  />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/test_message"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="TextView"-->
-<!--        app:layout_constraintLeft_toRightOf="@+id/textView4"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:ignore="MissingConstraints" />-->
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_join_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/asdad"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/hashtag"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/join"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Join a team with a code"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_create_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/asddsad"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/plus"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/createe"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Create new team"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_manage_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cann"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/cancel"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/canscel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/act_teams_fr_listing_edit_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/grey_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="invisible">
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_edit_window_delete_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/asddsasdd"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/trash"
+                app:tint="@color/red_1"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/defl"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Delete team"
+                android:textColor="@color/red_1"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_edit_window_edit_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/edd"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/edit"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Edit team"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_edit_window_leave_team_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/lv"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/leave"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/leave"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Leave team"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/act_teams_fr_listing_edit_window_cancel_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cn"
+                android:layout_margin="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerInside"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/cancel"
+                app:tint="@color/white"
+                android:text="Join Team" />
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

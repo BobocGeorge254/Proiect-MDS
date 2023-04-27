@@ -4,57 +4,131 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context="teams.FragmentTeamsTeamPosts">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Team Post"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/act_teams_fr_team_posts_team_id_TW"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/toppp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Id"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/act_teams_fr_team_posts_team_chanel_name_TW"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Algoritmi avansati"
+            android:textColor="@color/grey_1"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/act_teams_fr_team_posts_add_chanel_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/qeqfsa"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/plus"
+            app:tint="@color/white"
+            android:background="@null"/>
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toppp">
+
+        <Button
+            android:id="@+id/postbutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Posts"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_2"
+            android:background="@drawable/teams_nav_buttons"/>
+
+        <Button
+            android:id="@+id/act_teams_fr_team_posts_nav_files_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Files"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/transparent_button"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/act_teams_fr_team_posts_recycleview"
-        android:layout_width="150dp"
+        android:id="@+id/act_teams_fr_team_posts_posts_listing_recycleview"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toTopOf="@+id/act_teams_fr_team_posts_add_chanel_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/act_teams_fr_team_posts_team_id_TW" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <LinearLayout
         android:id="@+id/act_teams_fr_team_post_create_chanel_window"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
         android:orientation="vertical"
-        android:background="#03a1fc"
+        android:background="@color/grey_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
+        <TextView
+            android:id="@+id/joinwithcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#CBB5FD"
+            android:layout_margin="10dp"
+            android:text="Create a new chanel"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+
+            android:textAlignment="textStart"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInasdputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Chanel name"
+            android:textColorHint="@color/grey_1"
+            app:boxBackgroundMode="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -63,55 +137,263 @@
                 android:id="@+id/act_teams_fr_team_post_create_chanel_name_ET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:hint="chanel name..."
+                android:background="@color/grey_2"
                 android:inputType="textCapSentences"
-                android:textColor="#FAF6F6" />
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/purple_2" />
 
         <LinearLayout
             android:id="@+id/joinbuttonslayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#03a1fc"
+            android:gravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/act_teams_fr_team_post_create_chanel_create_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_chanel_cancel_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Create"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Cancel"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/act_teams_fr_team_post_create_chanel_cancel_button"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_chanel_create_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="40dp"
-                android:layout_weight="1"
-                android:text="Cancel"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Create"
+                android:background="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/act_teams_fr_team_posts_add_chanel_button"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/act_teams_fr_team_post_create_post_window"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:text="Add Chanel"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="vertical"
+        android:background="@color/grey_2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible">
+
+        <TextView
+            android:id="@+id/createpost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Write a new post"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+
+            android:textAlignment="textStart"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInasdputLayousdat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Your message"
+            android:textColorHint="@color/grey_1"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/act_teams_fr_team_post_create_post_text_ET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_2"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/purple_2" />
+
+        <LinearLayout
+            android:id="@+id/joinbuttonslsadayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_post_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Cancel"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_post_create_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Create"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/act_teams_fr_team_post_create_reply_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="vertical"
+        android:background="@color/grey_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible">
+
+        <TextView
+            android:id="@+id/createreply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Write a reply"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+
+            android:textAlignment="textStart"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInasdputLayousaadat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:hint="Your reply"
+            android:textColorHint="@color/grey_1"
+            app:boxBackgroundMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/act_teams_fr_team_post_create_reply_text_ET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_2"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@color/purple_2" />
+
+        <LinearLayout
+            android:id="@+id/createreplylayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_reply_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Cancel"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/act_teams_fr_team_post_create_reply_create_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textSize="16dp"
+                android:textColor="@color/purple_2"
+                android:text="Create"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/act_teams_fr_team_posts_add_post_button"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/add_post_button_background"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/buttt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/write_post"
+            app:tint="@color/white" />
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
