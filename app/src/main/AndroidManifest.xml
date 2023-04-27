@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Register"
         tools:targetApi="31">
         <activity
+            android:name="chat.MessageActivity"
+            android:exported="false" />
+        <activity
             android:name="teams.TeamsActivity"
             android:exported="false" />
         <activity
