@@ -8,6 +8,8 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.example.register.R;
 
@@ -29,8 +33,10 @@ import others.PreferencesManager;
 
 public class FragmentTeamsFilesList extends Fragment implements ActivityBasics {
 
-    private Button act_teams_fr_team_files_listing_upload_button;
+    private FrameLayout act_teams_fr_team_files_listing_upload_button;
     private RecyclerView act_teams_fr_team_files_listing_recycleview;
+    private Button act_teams_fr_team_files_listing_nav_posts_button;
+    private TextView act_teams_fr_team_files_listing_team_name_TW;
     private ActivityResultLauncher<String> uploadFileExplorer;
     private View view;
     private AdapterTeamFile adapterFiles;
@@ -55,11 +61,17 @@ public class FragmentTeamsFilesList extends Fragment implements ActivityBasics {
     public void getActivityElements() {
         act_teams_fr_team_files_listing_upload_button = view.findViewById(R.id.act_teams_fr_team_files_listing_upload_button);
         act_teams_fr_team_files_listing_recycleview = view.findViewById(R.id.act_teams_fr_team_files_listing_recycleview);
+        act_teams_fr_team_files_listing_nav_posts_button = view.findViewById(R.id.act_teams_fr_team_files_listing_nav_posts_button);
+
+        act_teams_fr_team_files_listing_team_name_TW = view.findViewById(R.id.act_teams_fr_team_files_listing_team_name_TW);
+        String teamName = TeamsRequests.getTeamData(PreferencesManager.getLastOpenedTeamId(getContext())).getName();
+        act_teams_fr_team_files_listing_team_name_TW.setText(teamName);
     }
 
     @Override
     public void setListeners() {
         act_teams_fr_team_files_listing_upload_button_onClick();
+        act_teams_fr_team_files_listing_nav_posts_button_onClick();
     }
 
     private void act_teams_fr_team_files_listing_upload_button_onClick() {
@@ -67,6 +79,15 @@ public class FragmentTeamsFilesList extends Fragment implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 uploadFileExplorer.launch("*/*");
+            }
+        });
+    }
+
+    private void act_teams_fr_team_files_listing_nav_posts_button_onClick() {
+        act_teams_fr_team_files_listing_nav_posts_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setTeamPostsListingFragment();
             }
         });
     }
@@ -118,5 +139,12 @@ public class FragmentTeamsFilesList extends Fragment implements ActivityBasics {
                 }
             }
         });
+    }
+
+    private void setTeamPostsListingFragment() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.act_teams_frameLayout, new FragmentTeamsTeamPosts());
+        fragmentTransaction.commit();
     }
 }

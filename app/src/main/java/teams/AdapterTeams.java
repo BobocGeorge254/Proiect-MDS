@@ -87,7 +87,8 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
 
         String teamId = teamsList.get(position).getId();
 
-        holder.dataTeamChanelNameCardList.add(TeamsRequests.getTeamsChanels(PreferencesManager.getLastOpenedTeamId(context)).get(0));
+ //       holder.dataTeamChanelNameCardList.add(TeamsRequests.getTeamsChanels(PreferencesManager.getLastOpenedTeamId(context)).get(0));
+        holder.dataTeamChanelNameCardList.add(TeamsRequests.getTeamsChanels(teamId).get(0));
         holder.adapterTeamsChanelName = new AdapterTeamChanelName(holder.dataTeamChanelNameCardList, context);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
         holder.card_chanels_recycleview.setLayoutManager(layoutManager);
