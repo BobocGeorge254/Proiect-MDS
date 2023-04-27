@@ -32,7 +32,10 @@ public class MessagesRequests {
 
         while (!getDataUser.isComplete()) {}  //blocks until query is executed
 
-        return (DataUserCard) getDataUser.getResult().get(id);
+        String email =  getDataUser.getResult().getString("email");
+        String username =  getDataUser.getResult().getString("username");
+        return new DataUserCard(id, email, username);
+
 
     }
 
