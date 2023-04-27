@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fffeb8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/black">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/card_team_post_sender_name_TW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Ion Marcel"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/card_team_post_send_date_TW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23-05-2022"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/card_team_post_text_TW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Acesta este un mesaj trimis de Ion Marcel 3333333333333 4435345"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textAlignment="viewStart"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_2" />
+
+        <TextView
+            android:id="@+id/card_team_post_show_replies_TW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Show x replies"
+            android:textColor="@color/purple_1"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textAlignment="viewStart"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/card_team_post_replies_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_2" />
+
+        <TextView
+            android:id="@+id/card_team_post_create_reply_TW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Reply"
+            android:textColor="@color/grey_1"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textAlignment="viewStart"/>
+
+        <ImageButton
+            android:id="@+id/card_team_post_delete_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@drawable/trash"
+            app:tint="@color/red_1"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="@color/grey_2" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
