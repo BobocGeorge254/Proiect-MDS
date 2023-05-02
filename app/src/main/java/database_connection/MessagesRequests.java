@@ -1,28 +1,28 @@
 package database_connection;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
+import chat.DataMessageCard;
 import chat.DataUserCard;
 import others.Manager;
-import teams.DataTeamCard;
-import teams.DataTeamChanelNameCard;
 
 public class MessagesRequests {
 
@@ -39,7 +39,7 @@ public class MessagesRequests {
 
     }
 
-    public static Set<String> getUsersMessage(String userId) {
+    public static Set<String> getUsersFriends(String userId) {
         CollectionReference messagesCollection = Manager.dbConnection.getDatabase().collection("Messages");
         CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
 
@@ -55,15 +55,6 @@ public class MessagesRequests {
         for (DocumentSnapshot documentSnapshot : queryGetFriendTask.getResult().getDocuments()) {
             String id_friend = documentSnapshot.getString("receiver_id");
             usersMessagesList.add(id_friend);
-
-//            Task<DocumentSnapshot> getUserTask = usersCollection.document(id_friend).get();
-//            while (!getUserTask.isComplete()) {
-//            }  //blocks until query is executed
-//
-//            if (getUserTask.getResult().exists()) {
-//                String name = getUserTask.getResult().get("username").toString();
-//                usersMessagesList.add(name);
-//            }
         }
 
         //If current user is receiver
@@ -76,18 +67,108 @@ public class MessagesRequests {
         for (DocumentSnapshot documentSnapshot1 : queryGetFriendTask.getResult().getDocuments()) {
             String id_friend1 = documentSnapshot1.getString("sender_id");
             usersMessagesList.add(id_friend1);
-
-//            Task<DocumentSnapshot> getUserTask1 = usersCollection.document(id_friend1).get();
-//
-//            while (!getUserTask1.isComplete()) {}  //blocks until query is executed
-//
-//            if (getUserTask1.getResult().exists()) {
-//                String name = getUserTask1.getResult().get("username").toString();
-//                usersMessagesList.add(name);
-//            }
-
         }
     return usersMessagesList;
     }
 
+    public static ArrayList<DataUserCard> SearchByUsername (String username) {
+
+        System.out.println("USERNAME MERGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
+        ArrayList<DataUserCard> usersList = new ArrayList<>();
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+
+        Query queryGetUser = usersCollection.whereEqualTo("username", username);
+        Task<QuerySnapshot> queryGetUsersTask = queryGetUser.get();
+
+        while (!queryGetUsersTask.isComplete()) {
+        }   //blocks until query is executed
+
+        if (!queryGetUsersTask.getResult().isEmpty()) {
+            for (DocumentSnapshot documentSnapshot : queryGetUsersTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getId();
+                String email_user = documentSnapshot.getString("email");
+                String username_user = documentSnapshot.getString("username");
+
+                DataUserCard user = new DataUserCard(id,email_user, username_user);
+
+                usersList.add(user);
+            }
+        }
+
+        return usersList;
+
+    }
+
+    public static ArrayList<DataUserCard> SearchByEmail (String email) {
+
+        ArrayList<DataUserCard> usersList = new ArrayList<>();
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+
+        Query queryGetUser = usersCollection.whereEqualTo("email", email);
+        Task<QuerySnapshot> queryGetUsersTask = queryGetUser.get();
+
+        while (!queryGetUsersTask.isComplete()) {
+        }   //blocks until query is executed
+
+        if (!queryGetUsersTask.getResult().isEmpty()) {
+            for (DocumentSnapshot documentSnapshot : queryGetUsersTask.getResult().getDocuments()) {
+                String id = documentSnapshot.getId();
+                String email_user = documentSnapshot.getString("email");
+                String username_user = documentSnapshot.getString("username");
+
+                DataUserCard user = new DataUserCard(id,email_user, username_user);
+
+                usersList.add(user);
+            }
+        }
+
+        return usersList;
+
+    }
+
+    public static ArrayList<DataMessageCard> GetUserMessages(String currentUserId, String friendId) {
+        ArrayList<DataMessageCard> messagesList = new ArrayList<>();
+
+        CollectionReference messagesCollection = Manager.dbConnection.getDatabase().collection("Messages");
+
+        Query queryGetMessages = messagesCollection.whereEqualTo("sender_id", currentUserId);
+        Task<QuerySnapshot> queryGetMessagesTask = queryGetMessages.get();
+
+        while (!queryGetMessagesTask.isComplete()) {
+        }   //blocks until query is executed
+
+
+        for (DocumentSnapshot documentSnapshot : queryGetMessagesTask.getResult().getDocuments()) {
+            if(Objects.equals(documentSnapshot.getString("receiver_id"), friendId)) {
+                String id = documentSnapshot.getId();
+                String sender_id = documentSnapshot.getString("sender_id");
+                String receiver_id = documentSnapshot.getString("receiver_id");
+                String text = documentSnapshot.getString("text");
+                String datePosted = documentSnapshot.getString("date_posted");
+
+                messagesList.add(new DataMessageCard(sender_id, receiver_id, id, datePosted, text));
+            }
+        }
+
+        Query queryGetMessages1 = messagesCollection.whereEqualTo("receiver_id", currentUserId);
+        Task<QuerySnapshot> queryGetMessagesTask1 = queryGetMessages1.get();
+
+        while (!queryGetMessagesTask1.isComplete()) {
+        }   //blocks until query is executed
+
+
+        for (DocumentSnapshot documentSnapshot : queryGetMessagesTask1.getResult().getDocuments()) {
+            if(Objects.equals(documentSnapshot.getString("sender_id"), friendId)) {
+                String id = documentSnapshot.getId();
+                String sender_id = documentSnapshot.getString("sender_id");
+                String receiver_id = documentSnapshot.getString("receiver_id");
+                String text = documentSnapshot.getString("text");
+                String datePosted = documentSnapshot.getString("date_posted");
+
+                messagesList.add(new DataMessageCard(receiver_id, sender_id, id, datePosted, text));
+            }
+        }
+        return messagesList;
+    };
 }

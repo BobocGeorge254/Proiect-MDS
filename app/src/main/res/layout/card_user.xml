@@ -39,7 +39,7 @@
 
 
         <Button
-            android:id="@+id/card_user_open_button"
+            android:id="@+id/card_open_button"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="Open"
