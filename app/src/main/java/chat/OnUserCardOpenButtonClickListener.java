@@ -1,5 +1,5 @@
 package chat;
 
 public interface OnUserCardOpenButtonClickListener {
-    void onCardItemClick(String userId);
+    void onCardUserClick(String currentUserId, String friendId);
 }

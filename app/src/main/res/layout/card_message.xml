@@ -1,72 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="10dp"
+    android:layout_height="match_parent"
     android:background="#fffeb8"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/card_message_sender_id_TW"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="SENDER_ID"
-            android:textColor="#939292"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-        <TextView
-            android:id="@+id/card_message_receiver_id_TW"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="RECEIVER_ID"
-            android:textColor="#939292"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-        <TextView
-            android:id="@+id/card_message_date_posted_TW"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="DATE_POSTED"
-            android:textColor="#939292"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
-        <TextView
-            android:id="@+id/card_message_text_TW"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="TEXT"
-            android:textColor="#939292"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
-        <Button
-            android:id="@+id/card_message_open_button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Open"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+                <TextView
+                    android:id="@+id/card_message_receiver_id_TW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RECEIVER_ID"
+                    android:textColor="#939292"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/card_message_sender_id_TW"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SENDER_ID"
+                    android:textColor="#939292"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/card_message_text_TW"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="TEXT"
+                android:textColor="#939292"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/card_message_date_posted_TW"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="DATE_POSTED"
+                android:textColor="#939292"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

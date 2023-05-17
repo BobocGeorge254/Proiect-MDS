@@ -5,6 +5,8 @@ public class DataUserCard {
     private final String email;
     private final String username;
 
+    private OnUserCardOpenButtonClickListener OnUserCardOpenButtonClickListener;
+
     public DataUserCard(String id, String email, String username) {
         this.id = id;
         this.email = email;
@@ -20,5 +22,9 @@ public class DataUserCard {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setOnUserCardOpenButtonClickListener(OnUserCardOpenButtonClickListener listener) {
+        OnUserCardOpenButtonClickListener = listener;
     }
 }

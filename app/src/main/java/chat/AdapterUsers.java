@@ -1,6 +1,7 @@
 package chat;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,9 @@ import com.example.register.R;
 import java.security.AccessControlContext;
 import java.util.ArrayList;
 
-public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder> {
+public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder>{
 
+    private final String currentUserId;
     private final ArrayList<DataUserCard> usersList;
     private Context context;
 
@@ -26,7 +28,12 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder
         this.onUserCardOpenButtonClickListener = onUserCardOpenButtonClickListener;
     }
 
-    public AdapterUsers(ArrayList<DataUserCard> usersList, Context context) {
+    public void onCardUserClick(String userId) {
+        System.out.println("MERGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+    }
+
+    public AdapterUsers(String currentUserId, ArrayList<DataUserCard> usersList, Context context) {
+        this.currentUserId = currentUserId;
         this.usersList = usersList;
         this.context = context;
     }
@@ -40,7 +47,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder
             super(view);
             card_email = view.findViewById(R.id.card_user_email_TW);
             card_username = view.findViewById(R.id.card_user_username_TW);
-            card_open_button = view.findViewById(R.id.card_user_open_button);
+            card_open_button = view.findViewById(R.id.card_open_button);
         }
     }
 
@@ -53,6 +60,8 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+        String currentUserId = this.currentUserId;
         String email = usersList.get(position).getEmail();
         holder.card_email.setText(email);
 
@@ -65,7 +74,7 @@ public class AdapterUsers extends RecyclerView.Adapter<AdapterUsers.MyViewHolder
             @Override
             public void onClick(View view) {
                 if (onUserCardOpenButtonClickListener != null)
-                    onUserCardOpenButtonClickListener.onCardItemClick(id);
+                    onUserCardOpenButtonClickListener.onCardUserClick(currentUserId, id);
             }
         });
     }
