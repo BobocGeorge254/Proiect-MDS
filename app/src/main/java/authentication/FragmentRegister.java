@@ -1,5 +1,7 @@
 package authentication;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.register.R;
 
@@ -25,6 +28,7 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
     private EditText act_authentication_fr_register_password_ET;
     private Button act_authentication_fr_register_backToLogIn_button;
     private Button act_authentication_fr_register_register_button;
+    private TextView act_authentication_fr_register_warning_TW;
 
     View view;
 
@@ -36,6 +40,8 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
         getActivityElements();
         setListeners();
 
+        act_authentication_fr_register_warning_TW.setVisibility(View.INVISIBLE);
+
         return view;
     }
 
@@ -46,6 +52,7 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
         act_authentication_fr_register_password_ET = view.findViewById(R.id.act_authentication_fr_register_password_ET);
         act_authentication_fr_register_backToLogIn_button = view.findViewById(R.id.act_authentication_fr_register_backToLogIn_button);
         act_authentication_fr_register_register_button = view.findViewById(R.id.act_authentication_fr_register_register_button);
+        act_authentication_fr_register_warning_TW = view.findViewById(R.id.act_authentication_fr_register_warning_TW);
     }
 
     @Override
@@ -63,7 +70,15 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
                 String username = act_authentication_fr_register_username_ET.getText().toString().trim();
                 String password = act_authentication_fr_register_password_ET.getText().toString().trim();
 
-                System.out.println(AuthenticationRequests.registerUser(email, username, password));
+                String message = AuthenticationRequests.registerUser(email, username, password);
+                act_authentication_fr_register_warning_TW.setVisibility(View.VISIBLE);
+                act_authentication_fr_register_warning_TW.setText(message);
+
+                if(message.equals("User added successfully")) {
+                    act_authentication_fr_register_warning_TW.setTextColor(Color.GREEN);
+                }
+                else
+                    act_authentication_fr_register_warning_TW.setTextColor(Color.RED);
             }
         });
     }
@@ -73,6 +88,7 @@ public class FragmentRegister extends Fragment implements ActivityBasics {
         act_authentication_fr_register_backToLogIn_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                act_authentication_fr_register_warning_TW.setVisibility(View.INVISIBLE);
                 setLogInFragment();
             }
         });

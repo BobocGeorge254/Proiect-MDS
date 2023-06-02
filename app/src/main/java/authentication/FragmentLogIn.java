@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.register.R;
 
@@ -26,6 +27,7 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
     private EditText act_authentication_fr_authentication_password_ET;
     private Button act_authentication_fr_authentication_signIn_button;
     private Button act_authentication_fr_authentication_toRegister_button;
+    private TextView act_authentication_fr_login_warning_TW;
 
     View view;
 
@@ -37,6 +39,7 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
         getActivityElements();
         setListeners();
 
+        act_authentication_fr_login_warning_TW.setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -46,6 +49,7 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
         act_authentication_fr_authentication_password_ET = view.findViewById(R.id.act_authentication_fr_login_password_ET);
         act_authentication_fr_authentication_signIn_button = view.findViewById(R.id.act_authentication_fr_login_signIn_button);
         act_authentication_fr_authentication_toRegister_button = view.findViewById(R.id.act_authentication_fr_login_toRegister_button);
+        act_authentication_fr_login_warning_TW = view.findViewById(R.id.act_authentication_fr_login_warning_TW);
     }
 
     @Override
@@ -68,6 +72,10 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
                     PreferencesManager.saveUserId(getContext(), response);
                     startActivity(new Intent(getContext(), TeamsActivity.class));
                 }
+                else {
+                    act_authentication_fr_login_warning_TW.setVisibility(View.VISIBLE);
+                    act_authentication_fr_login_warning_TW.setText("Wrong creditentials");
+                }
 
                 System.out.println(response);
             }
@@ -79,6 +87,7 @@ public class FragmentLogIn extends Fragment implements ActivityBasics {
         act_authentication_fr_authentication_toRegister_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                act_authentication_fr_login_warning_TW.setVisibility(View.INVISIBLE);
                 setRegisterFragment();
             }
         });
