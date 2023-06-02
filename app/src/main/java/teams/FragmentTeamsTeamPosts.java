@@ -129,7 +129,7 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
             public void onClick(View view) {
                 String name = act_teams_fr_team_post_create_chanel_name_ET.getText().toString().trim();
                 String response = TeamsRequests.addChanel(PreferencesManager.getLastOpenedTeamId(getContext()), name);
-
+                act_teams_fr_team_post_create_chanel_window.setVisibility(View.INVISIBLE);
                 if(!response.equals("Error adding chanel")) {
                     //TODO
                 }
@@ -169,6 +169,8 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
                             PreferencesManager.getLastOpenedTeamId(getContext())));
                     adapterTeamsPosts.notifyItemInserted(dataTeamPostsList.size() - 1);
                 }
+
+                act_teams_fr_team_post_create_post_window.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -193,6 +195,8 @@ public class FragmentTeamsTeamPosts extends Fragment implements ActivityBasics {
                 if(!response.equals("Error adding team post reply")) {
                    adapterTeamsPosts.notifyReplyDataChanged(PreferencesManager.getLastOpenedTeamPostReplyingId(getContext()));
                 }
+
+                act_teams_fr_team_post_create_reply_window.setVisibility(View.INVISIBLE);
             }
         });
     }
