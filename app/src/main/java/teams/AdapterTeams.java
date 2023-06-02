@@ -53,10 +53,10 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
         private final TextView card_name;
         private final ImageButton card_3dots_button;
         private final ImageView card_logo;
-        private ImageButton card_dropdown_button;
+        private final ImageButton card_dropdown_button;
         private final RecyclerView card_chanels_recycleview;
         private AdapterTeamChanelName adapterTeamsChanelName;
-        private ArrayList<DataTeamChanelNameCard> dataTeamChanelNameCardList;
+        private final ArrayList<DataTeamChanelNameCard> dataTeamChanelNameCardList;
 
         public MyViewHolder(final View view) {
             super(view);

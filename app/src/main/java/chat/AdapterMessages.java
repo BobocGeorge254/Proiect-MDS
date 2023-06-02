@@ -36,7 +36,6 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
         private final TextView card_receiver_id;
         private final TextView card_date_posted;
         private final TextView card_text;
-        private final Button card_open_button;
 
         public MyViewHolder(final View view) {
             super(view);
@@ -44,7 +43,6 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
             card_receiver_id = view.findViewById(R.id.card_message_receiver_id_TW);
             card_date_posted = view.findViewById(R.id.card_message_date_posted_TW);
             card_text = view.findViewById(R.id.card_message_text_TW);
-            card_open_button = view.findViewById(R.id.card_message_open_button);
         }
     }
 
@@ -69,16 +67,10 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
         String text = messagesList.get(position).getText();
         holder.card_text.setText(text);
 
-        String id = messagesList.get(position).getId();
-
-        holder.card_open_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onMessageCardOpenButtonClickListener != null)
-                    onMessageCardOpenButtonClickListener.onCardItemClick(id);
-            }
-        });
+//        String id = messagesList.get(position).getId();
     }
+
+
 
     @Override
     public int getItemCount() {
