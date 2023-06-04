@@ -27,6 +27,7 @@ public class MessageActivity extends AppCompatActivity implements ActivityBasics
     private RecyclerView act_chat_message_recyclerView;
     private RecyclerView act_chat_recyclerView;
     private Button act_chat_search_button;
+    private Button act_chat_back_button;
     private RadioGroup act_chat_radio_group;
     private RadioButton act_chat_searchByEmail_button;
     private RadioButton act_chat_searchByUsername_button;
@@ -66,6 +67,12 @@ public class MessageActivity extends AppCompatActivity implements ActivityBasics
                 }
             }
         });
+        act_chat_back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         act_chat_search_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +109,7 @@ public class MessageActivity extends AppCompatActivity implements ActivityBasics
         act_chat_searchByUsername_button = findViewById(R.id.act_chat_searchByUsername_button);
         act_chat_search_button = findViewById(R.id.act_chat_search_button);
         textbox_search = findViewById(R.id.textbox_search);
+        act_chat_back_button = findViewById(R.id.act_chat_back_button);
 
     }
 

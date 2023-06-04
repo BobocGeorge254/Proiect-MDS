@@ -24,55 +24,71 @@
             android:id="@+id/act_chat_search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search!"
             android:layout_gravity="end"
-            />
+            android:text="Search!" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/radio_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_layout"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/third_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/radio_layout"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_users"
+        android:layout_width="174dp"
+        android:layout_height="634dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintTop_toBottomOf="@+id/act_chat_radio_group"
+        tools:ignore="MissingConstraints" />
 
     <RadioGroup
         android:id="@+id/act_chat_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/first_layout"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="48dp">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/first_layout"
+        tools:layout_editor_absoluteX="3dp">
 
         <RadioButton
             android:id="@+id/act_chat_searchByEmail_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Email"/>
+            android:text="Email" />
 
         <RadioButton
             android:id="@+id/act_chat_searchByUsername_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Username"/>
+            android:text="Username" />
+
     </RadioGroup>
 
-    <LinearLayout
-        android:id="@+id/third_layout"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/act_chat_back_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/act_chat_radio_group"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_users"
-        android:layout_width="206dp"
-        android:layout_height="272dp"
-        android:spinnerMode="dropdown"
+        android:layout_gravity="center_horizontal"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

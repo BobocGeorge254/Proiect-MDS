@@ -1,10 +1,14 @@
 package chat;
 
+import static database_connection.MessagesRequests.getUsername;
+
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.register.R;
 
 import java.util.ArrayList;
+
+import others.PreferencesManager;
 
 public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyViewHolder> {
 
@@ -32,15 +38,20 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private final TextView card_sender_id;
-        private final TextView card_receiver_id;
+        //private final TextView card_sender_id;
+        //private final TextView card_receiver_id;
         private final TextView card_date_posted;
         private final TextView card_text;
+        private final TextView card_sender_username;
+        private final TextView card_receiver_username;
+
 
         public MyViewHolder(final View view) {
             super(view);
-            card_sender_id = view.findViewById(R.id.card_message_sender_id_TW);
-            card_receiver_id = view.findViewById(R.id.card_message_receiver_id_TW);
+            card_sender_username = view.findViewById(R.id.card_message_sender_username_TW);
+            card_receiver_username = view.findViewById(R.id.card_message_receiver_username_TW);
+            //card_sender_id = view.findViewById(R.id.card_message_sender_id_TW);
+            //card_receiver_id = view.findViewById(R.id.card_message_receiver_id_TW);
             card_date_posted = view.findViewById(R.id.card_message_date_posted_TW);
             card_text = view.findViewById(R.id.card_message_text_TW);
         }
@@ -55,11 +66,15 @@ public class AdapterMessages extends RecyclerView.Adapter<AdapterMessages.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String sender_id = messagesList.get(position).getSenderId();
-        holder.card_sender_id.setText(sender_id);
 
-        String receiver_id = messagesList.get(position).getReceiverId();
-        holder.card_receiver_id.setText(receiver_id);
+        String currentUserId = PreferencesManager.getUserId(context);
+        String username = getUsername(currentUserId);
+
+        String senderUsername = messagesList.get(position).getSenderUsername();
+        holder.card_sender_username.setText(senderUsername);
+
+        String receiverUsername = messagesList.get(position).getReceiverUsername();
+        holder.card_receiver_username.setText(receiverUsername);
 
         String date_posted = messagesList.get(position).getDatePosted();
         holder.card_date_posted.setText(date_posted);
