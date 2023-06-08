@@ -98,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
-        android:text="User doesn not exist"
+        android:text="User does not exist"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"

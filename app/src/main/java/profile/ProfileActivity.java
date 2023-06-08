@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,8 @@ import others.PreferencesManager;
 
 import database_connection.MessagesRequests ;
 import database_connection.OtherRequests ;
+import teams.TeamsActivity;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,6 +64,8 @@ public class ProfileActivity extends AppCompatActivity {
         usernameEdit.setText(dataUserCard.getUsername());
         emailEdit.setText(dataUserCard.getEmail());
         passwordEdit.setText(dataUserCard.getPassword());
+
+        Button backButton = findViewById(R.id.buttonBack) ;
 
         updatedUsername = usernameEdit.getText().toString() ;
         updatedEmail = emailEdit.getText().toString() ;
@@ -108,6 +113,14 @@ public class ProfileActivity extends AppCompatActivity {
                     database_connection.OtherRequests.updateUser(userId, updatedUsername, updatedEmail, updatedPassword);
                     Toast.makeText(ProfileActivity.this, "Password updated succesfuly!", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, TeamsActivity.class);
+                startActivity(intent);
             }
         });
     }
