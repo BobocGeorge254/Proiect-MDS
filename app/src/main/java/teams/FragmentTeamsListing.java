@@ -165,6 +165,8 @@ public class FragmentTeamsListing extends Fragment implements ActivityBasics {
                     dataTeamCardList.addAll(TeamsRequests.getTeams(PreferencesManager.getUserId(getContext())));
                     adapterTeams.notifyDataSetChanged();
                 }
+
+                act_teams_fr_listing_join_team_window.setVisibility(View.INVISIBLE);
             }
         });
     }

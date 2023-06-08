@@ -1,14 +1,5 @@
 package database_connection;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -16,7 +7,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,8 +24,8 @@ public class MessagesRequests {
 
         String email =  getDataUser.getResult().getString("email");
         String username =  getDataUser.getResult().getString("username");
-        return new DataUserCard(id, email, username);
-
+        String password = getDataUser.getResult().getString("password") ;
+        return new DataUserCard(id, email, username, password);
 
     }
 
@@ -87,8 +77,8 @@ public class MessagesRequests {
                 String id = documentSnapshot.getId();
                 String email_user = documentSnapshot.getString("email");
                 String username_user = documentSnapshot.getString("username");
-
-                DataUserCard user = new DataUserCard(id,email_user, username_user);
+                String password_user = documentSnapshot.getString("password") ;
+                DataUserCard user = new DataUserCard(id,email_user, username_user, password_user);
 
                 usersList.add(user);
             }
@@ -114,8 +104,8 @@ public class MessagesRequests {
                 String id = documentSnapshot.getId();
                 String email_user = documentSnapshot.getString("email");
                 String username_user = documentSnapshot.getString("username");
-
-                DataUserCard user = new DataUserCard(id,email_user, username_user);
+                String password_user = documentSnapshot.getString("password") ;
+                DataUserCard user = new DataUserCard(id,email_user, username_user, password_user);
 
                 usersList.add(user);
             }
