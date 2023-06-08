@@ -63,8 +63,6 @@ public class MessagesRequests {
 
     public static ArrayList<DataUserCard> SearchByUsername (String username) {
 
-        System.out.println("USERNAME MERGEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-
         ArrayList<DataUserCard> usersList = new ArrayList<>();
         CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
 
@@ -134,10 +132,13 @@ public class MessagesRequests {
                 String id = documentSnapshot.getId();
                 String sender_id = documentSnapshot.getString("sender_id");
                 String receiver_id = documentSnapshot.getString("receiver_id");
+                String senderUsername = getUsername(sender_id);
+                String receiverUsername = getUsername(receiver_id);
                 String text = documentSnapshot.getString("text");
-                String datePosted = documentSnapshot.getString("date_posted");
+                String datePosted = documentSnapshot.getString("datePosted");
+                System.out.println(datePosted + "Dateposted MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
 
-                messagesList.add(new DataMessageCard(sender_id, receiver_id, id, datePosted, text));
+                messagesList.add(new DataMessageCard(senderUsername, receiverUsername, sender_id, receiver_id, id, datePosted, text));
             }
         }
 
@@ -153,12 +154,23 @@ public class MessagesRequests {
                 String id = documentSnapshot.getId();
                 String sender_id = documentSnapshot.getString("sender_id");
                 String receiver_id = documentSnapshot.getString("receiver_id");
+                String senderUsername = getUsername(sender_id);
+                String receiverUsername = getUsername(receiver_id);
                 String text = documentSnapshot.getString("text");
-                String datePosted = documentSnapshot.getString("date_posted");
+                String datePosted = documentSnapshot.getString("datePosted");
 
-                messagesList.add(new DataMessageCard(receiver_id, sender_id, id, datePosted, text));
+                messagesList.add(new DataMessageCard(senderUsername, receiverUsername, sender_id, receiver_id, id, datePosted, text));
             }
         }
         return messagesList;
-    };
+    }
+    public static String getUsername(String id) {
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+        Task<DocumentSnapshot> getDataUser = usersCollection.document(id).get();
+
+        while (!getDataUser.isComplete()) {}  //blocks until query is executed
+
+        String username =  getDataUser.getResult().getString("username");
+        return username;
+    }
 }

@@ -1,5 +1,7 @@
 package chat;
 
+import static database_connection.MessagesRequests.getUsername;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -49,6 +51,7 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
     private String currentUserId;
     private String friendId;
 
+    private Button act_message_back_button;
     private Button act_chat_seend_message_button;
     private EditText textbox_seend_message;
 
@@ -76,13 +79,24 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapterMessages);
 
+        //int verticalSpacingInPixels = getResources().getDimensionPixelSize(R.dimen.vertical_spacing); // Specificați dimensiunea dorită a decalajului în dimensiunea pixelilor
+        //recyclerView.addItemDecoration(new SpacingItemDecoration(verticalSpacingInPixels));
+
         setListeners();
+
+        act_message_back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
     public void getActivityElements() {
         act_chat_seend_message_button = findViewById(R.id.act_chat_seend_message_button);
         textbox_seend_message = findViewById(R.id.textbox_seend_message);
+        act_message_back_button = findViewById(R.id.act_message_back_button);
     }
 
     @Override
@@ -94,7 +108,6 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
         act_chat_seend_message_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("MERGEEEEEEEEEEEEEEEEEEEEEEEEEEEE MESAj");
                 String textbox_content = textbox_seend_message.getText().toString();
 
                 // Obține data curentă
@@ -106,16 +119,36 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
                 String formattedDate = dateFormat.format(currentDate);
 
                 //DataMessageCard message = new DataMessageCard(currentUserId, friendId,formattedDate, textbox_content);
+                String currentUsername = getUsername(currentUserId);
+                String friendUsername = getUsername(friendId);
 
                 CollectionReference messagesCollection = Manager.dbConnection.getDatabase().collection("Messages");
                 Map<String, Object> message = new HashMap<>();
-                message.put("sender_id", currentDate);
+                message.put("senderUsername", currentUsername);
+                message.put("receiverUsername", friendUsername);
+                message.put("sender_id", currentUserId);
                 message.put("receiver_id", friendId);
                 message.put("datePosted", formattedDate);
                 message.put("text", textbox_content);
 
                 Task<DocumentReference> addMessageTask = messagesCollection.add(message);
-                while (!addMessageTask.isComplete()) {}
+                addMessageTask.addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Mesajul a fost adăugat cu succes
+                        textbox_seend_message.setText(""); // Golește conținutul câmpului de text
+
+                        // Actualizează lista de mesaje
+                        messagesColletion.add(new DataMessageCard(currentUsername, friendUsername, currentUserId, friendId, formattedDate, textbox_content));
+                        adapterMessages.notifyDataSetChanged();
+
+                        // Derulează recycler view la ultimul mesaj adăugat
+                        recyclerView.scrollToPosition(messagesColletion.size() - 1);
+                    } else {
+                        // Mesajul nu a putut fi adăugat
+                        // Tratați eroarea în consecință
+                    }
+                });
+
 
 //                FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                DatabaseReference messagesRef = database.getReference("Messages");
@@ -124,13 +157,24 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
         });
     }
 
+
+
     public static ArrayList<DataMessageCard> sortMessagesByDate(ArrayList<DataMessageCard> messages) {
         Collections.sort(messages, new Comparator<DataMessageCard>() {
             @Override
             public int compare(DataMessageCard m1, DataMessageCard m2) {
                 String date1 = m1.getDatePosted();
                 String date2 = m2.getDatePosted();
-                return date1.compareTo(date2);
+
+                if (date1 == null && date2 == null) {
+                    return 0; // Ambele obiecte sunt nule, deci sunt considerate egale
+                } else if (date1 == null) {
+                    return -1; // Primul obiect este nul, deci este considerat mai mic
+                } else if (date2 == null) {
+                    return 1; // Al doilea obiect este nul, deci este considerat mai mic
+                } else {
+                    return date1.compareTo(date2); // Compararea normală
+                }
             }
         });
         return messages;
