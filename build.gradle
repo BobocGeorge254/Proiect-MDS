@@ -3,6 +3,10 @@ buildscript {
         agp_version = '7.5'
     }
     dependencies {
+        testImplementation "junit:junit:4.13.2"
+        testImplementation "androidx.test:core:1.4.0"
+        testImplementation "org.mockito:mockito-core:3.12.4"
+        testImplementation "io.mockk:mockk:3.12.4"
         classpath 'com.google.gms:google-services:4.3.15'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
