@@ -44,5 +44,5 @@ time communication.
 
 ## Source control (branch creation, merge/rebase, pull requests)
 
-![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/branches.png)
+![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/branches.png) 
 
