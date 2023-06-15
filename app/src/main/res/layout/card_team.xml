@@ -48,6 +48,18 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textAlignment="textStart"/>
+            <TextView
+                android:id="@+id/card_team_id"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Programare Avansata"
+                android:textColor="@color/grey_1"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textAlignment="textStart"/>
+
 
             <ImageButton
                 android:id="@+id/card_team_3dots_imageButton"
