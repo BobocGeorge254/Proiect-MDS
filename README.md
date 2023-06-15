@@ -85,7 +85,7 @@ We used many comments in this project to clearly explain the implementation.This
 
 ## Design patterns
 
-## GitHub Copilot/chatGPT
+## ChatGPT
 
 We used chatGPT to correctly position the messages on the page.Furthermore, We used it to generate the message sorting function and many other functions.
 
