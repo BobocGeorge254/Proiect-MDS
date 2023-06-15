@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
+
+import org.robolectric.RobolectricTestRunner;
+
 import java.net.URI;
 
 public class PreferencesManager {

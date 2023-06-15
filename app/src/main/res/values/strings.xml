@@ -11,4 +11,16 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="image_options">
+        <item>Image 1</item>
+        <item>Image 2</item>
+        <item>Image 3</item>
+        <!-- Add more image options as needed -->
+    </string-array>
+    <string-array name="image_values">
+        <item>profilepic.png</item>
+        <item>picture1.png</item>
+        <item>trash.png</item>
+        <!-- Add corresponding values for each image option -->
+    </string-array>
 </resources>

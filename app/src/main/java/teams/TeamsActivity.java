@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.example.register.R;
 
+import authentication.AuthenticationActivity;
 import authentication.FragmentLogIn;
 import chat.MessageActivity;
 import database_connection.FileRequest;
@@ -22,6 +23,7 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
     private Button act_teams_fr_listing_menu_nav_team_button;
     private Button act_teams_fr_listing_menu_nav_profile_button;
     private Button act_teams_fr_messages_button;
+    private Button act_logout_button ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
         act_teams_fr_listing_menu_nav_team_button = findViewById(R.id.act_teams_fr_listing_menu_nav_team_button);
         act_teams_fr_listing_menu_nav_profile_button = findViewById(R.id.act_teams_fr_listing_menu_nav_profile_button);
         act_teams_fr_messages_button = findViewById(R.id.act_teams_fr_messages_button);
+        act_logout_button = findViewById(R.id.act_logout_button) ;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
         act_teams_fr_listing_menu_nav_team_button_onClick();
         act_teams_fr_listing_menu_nav_profile_button_onClick();
         act_teams_fr_messages_button_onClick();
+        act_logout_button_onClick() ;
     }
 
     private void act_teams_fr_listing_menu_nav_team_button_onClick() {
@@ -71,6 +75,15 @@ public class TeamsActivity extends AppCompatActivity implements ActivityBasics {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(TeamsActivity.this, ProfileActivity.class));
+            }
+        });
+    }
+
+    private void act_logout_button_onClick() {
+        act_logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TeamsActivity.this, AuthenticationActivity.class));
             }
         });
     }

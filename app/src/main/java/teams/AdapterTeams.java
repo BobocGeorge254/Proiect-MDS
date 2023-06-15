@@ -51,6 +51,7 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView card_name;
+        private final TextView card_id;
         private final ImageButton card_3dots_button;
         private final ImageView card_logo;
         private final ImageButton card_dropdown_button;
@@ -61,6 +62,7 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
         public MyViewHolder(final View view) {
             super(view);
             card_name = view.findViewById(R.id.card_team_name_TW);
+            card_id = view.findViewById(R.id.card_team_id) ;
             card_3dots_button = view.findViewById(R.id.card_team_3dots_imageButton);
             card_logo = view.findViewById(R.id.card_team_logo_imageView);
             card_chanels_recycleview = view.findViewById(R.id.card_team_chanels_recycleview);
@@ -81,6 +83,9 @@ public class AdapterTeams extends RecyclerView.Adapter<AdapterTeams.MyViewHolder
     public void onBindViewHolder(@NonNull AdapterTeams.MyViewHolder holder, int position) {
         String name = teamsList.get(position).getName();
         holder.card_name.setText(name);
+
+        String id = teamsList.get(position).getId();
+        holder.card_id.setText(id);
 
         String photoUri = teamsList.get(position).getPhotoUri();
         holder.card_logo.setImageBitmap(FileRequest.getTeamLogo(context, photoUri));
