@@ -99,4 +99,4 @@ We used chatGPT to correctly position the messages on the page.Furthermore, We u
 ![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/chat2.png)
 
 ## Video demo
-
+The demo of the app can be found [here](https://unibucro0-my.sharepoint.com/:v:/g/personal/andrei_nicolaescu_s_unibuc_ro/ESnEH8GgG8tPu_lm5bZWlskBrWcXJwT9Egu8K2R5tGbHVw).
