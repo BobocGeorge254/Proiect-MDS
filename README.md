@@ -46,3 +46,27 @@ time communication.
 
 ![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/branches.png) 
 
+## Automated tests
+![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/tests.png)
+
+## Bug report
+
+## Refactoring, code standards
+
+We used refactoring to rename variables and function names as suggestive as possible.
+
+## Comments
+
+We used many comments in this project to clearly explain the implementation.This makes it easy for you to understand the code. 
+
+## Design patterns
+
+## GitHub Copilot/chatGPT
+
+We used chatGPT to correctly position the messages on the page.Furthermore, We used it to generate the message sorting function and many other functions.
+
+![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/chat1.png)
+![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/chat2.png)
+
+## Video demo
+
