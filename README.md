@@ -75,6 +75,8 @@ The purpose of this test is to verify the correctness of the getters in the Pref
 
 ## Bug report
 
+During development we faced several bugs that were solved such a bug that was adding the same post/post reply multiple times to the database.
+
 ## Refactoring, code standards
 
 We used refactoring to rename variables and function names as suggestive as possible.
@@ -84,6 +86,8 @@ We used refactoring to rename variables and function names as suggestive as poss
 We used many comments in this project to clearly explain the implementation.This makes it easy for you to understand the code. 
 
 ## Design patterns
+
+We used Singleton design pattern in utility classes such as Manager, PreferencesManager, Utils.
 
 ## ChatGPT
 
