@@ -44,6 +44,26 @@ public class OtherRequests {
                 }) ;
     }
 
+    public static void updateProfilePhoto(String id, String image) {
+        CollectionReference usersCollection = Manager.dbConnection.getDatabase().collection("Users");
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("image", image); // Add the 'image' field to the user data
+
+        DocumentReference userDocRef = usersCollection.document(id);
+        userDocRef.update(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // User's profile photo updated successfully
+                        // You can perform additional actions here if needed
+                    }
+                });
+    }
+
+
+
+
 
 
 }
