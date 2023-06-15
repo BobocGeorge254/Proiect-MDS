@@ -47,6 +47,30 @@ time communication.
 ![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/branches.png) 
 
 ## Automated tests
+* Test Description: 
+The purpose of this test is to verify the correctness of the getters in the PreferencesManager class, which is responsible for managing user preferences.
+
+
+* Test Steps: 
+- Call the getter methods in the PreferencesManager class to retrieve the preferences.
+- Compare the retrieved values with the expected values.
+
+
+* Test Cases
+- Get User ID
+- Expected Result: The getUserId() method should return the correct user ID.
+- Actual Result: The getUserId() method returned the expected user ID.
+- Get User Name
+- Expected Result: The getUserName() method should return the correct user name.
+- Actual Result: The getUserName() method returned the expected user name.
+- Get Email Address
+- Expected Result: The getUserEmail() method should return the correct email address.
+- Actual Result: The getUserEmail() method returned the expected email address.
+
+
+* Similarly for profile activity
+
+
 ![Nu s-a putut incarca imaginea!](https://github.com/BobocGeorge254/Proiect-MDS/blob/main/tests.png)
 
 ## Bug report
