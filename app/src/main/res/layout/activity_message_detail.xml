@@ -6,29 +6,19 @@
     android:layout_height="match_parent"
     tools:context="chat.MessageDetailActivity">
 
-    <ScrollView
-        android:id="@+id/scroll_view_messages"
+    <LinearLayout
+        android:id="@+id/linear_layout_messages"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/linear_layout_input"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_messages"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_messages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:nestedScrollingEnabled="true" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_messages"
-                android:layout_width="match_parent"
-                android:layout_height="655dp"
-                android:nestedScrollingEnabled="true" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_layout_input"
@@ -46,7 +36,7 @@
             android:layout_marginEnd="8dp"
             android:text="Back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/scroll_view_messages" />
+            app:layout_constraintTop_toBottomOf="@id/linear_layout_messages" />
 
         <EditText
             android:id="@+id/textbox_seend_message"
@@ -68,3 +58,74 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context="chat.MessageDetailActivity">-->
+
+<!--    <ScrollView-->
+<!--        android:id="@+id/scroll_view_messages"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/linear_layout_input"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/linear_layout_messages"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/recycler_view_messages"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="655dp"-->
+<!--                android:nestedScrollingEnabled="true" />-->
+
+<!--        </LinearLayout>-->
+
+<!--    </ScrollView>-->
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linear_layout_input"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--        <Button-->
+<!--            android:id="@+id/act_message_back_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="Back"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/scroll_view_messages" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/textbox_seend_message"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:hint="Introduceți mesajul aici!"-->
+<!--            android:minHeight="48dp"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="8dp" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/act_chat_seend_message_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Trimite"-->
+<!--            android:layout_marginEnd="8dp" />-->
+
+<!--    </LinearLayout>-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

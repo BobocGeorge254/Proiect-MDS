@@ -149,10 +149,6 @@ public class MessageDetailActivity extends AppCompatActivity implements Activity
                     }
                 });
 
-
-//                FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                DatabaseReference messagesRef = database.getReference("Messages");
-//                messagesRef.push().setValue(message);
             }
         });
     }
