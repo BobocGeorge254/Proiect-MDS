@@ -76,6 +76,7 @@ The purpose of this test is to verify the correctness of the getters in the Pref
 ## Bug report
 
 During development we faced several bugs that were solved such a bug that was adding the same post/post reply multiple times to the database.
+There are still a few known bugs left such as a bug where the profile image doesn't change in the databse every time the user tries to update it.
 
 ## Refactoring, code standards
 
